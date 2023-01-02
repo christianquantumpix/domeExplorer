@@ -1,0 +1,133 @@
+html,
+body {
+    overflow: hidden;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+.renderCanvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+
+    z-index: 0;
+}
+
+.loadingScreenContainer {
+    position: absolute;
+
+    top: 0;
+    left: 0;
+
+    width: 100%;
+    height: 100%;
+
+    background-color: #893131;
+
+    z-index: 1;
+}
+
+.loadingScreenContent {
+    position: absolute;
+    margin: auto;
+    top: 50%;
+    left: 50%;
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+}
+
+.loaderMascot {
+    position: relative;
+    margin: 0;
+    left: 50%;
+    -ms-transform: translate(-50%, 0);
+    transform: translate(-50%, 0);
+}
+
+.loaderTextHeadline {
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    /* font-family: 'Times New Roman', Times, serif; */
+    font-size: 1.2rem;
+    text-align: center;
+    color: #fff;
+}
+
+.loaderText {
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    /* font-family: 'Times New Roman', Times, serif; */
+    font-size: 1.6rem;
+    font-style: italic;
+    text-align: center;
+    color: #fff;
+}
+
+.loadingScreenLampAnimation {
+    width: 4px;
+    height: 196px;
+    background: #fff;
+    margin: auto;
+    position: relative;
+    animation: shake 2s linear infinite alternate,
+               lightup 16s linear infinite;
+    transform-origin: 0 0;
+}
+
+.loadingScreenLampAnimation::before {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: 100%;
+    transform: translateX(-50%);
+    width: 32px;
+    height: 16px;
+    box-sizing: border-box;
+    border: 5px solid #FFC14D;
+    border-top: none;
+    border-radius: 0 0 20px 20px;
+}
+
+.loadingScreenLampAnimation::after {
+    content: '';
+    left: 50%;
+    bottom: 0;
+    position: absolute;
+    transform: translateX(-50%);
+    width: 64px;
+    height: 32px;
+    border-radius: 50px 50px 0 0;
+    background: #fff;
+}
+
+@keyframes shake {
+    0% { 
+        transform: rotate(11.25deg);
+    }
+    100% { 
+        transform: rotate(-11.25deg);
+    }
+}
+@keyframes lightup {
+    0% ,20% ,40%, 60%, 80% {
+        opacity: 0;
+    }
+    10%, 30%, 50%, 70%, 90% {
+        opacity: 1;
+    }
+}
+
+.loading {
+    /* display: block; */
+    visibility: visible;
+    opacity: 1;
+}
+
+.loaded {
+    /* display: none; */
+    visibility: hidden;
+    opacity: 0;
+    transition: visibility 0s .35s, opacity .35s ease-out;
+}
