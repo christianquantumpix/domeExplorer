@@ -4,73 +4,94 @@ import { DomeManager } from "./DomeManager";
 import { Tooltip } from "./Tooltip";
 import { UIManager } from "./UIManager";
 
-export class ViewpointButton { //implements Button
-    private name: string;
-    private scene: Scene;
-    private mesh: Mesh;
-    private tooltip: Tooltip;
-    private material: StandardMaterial;
-    private materialActive: StandardMaterial;
-    private domeManager: DomeManager;
-    private targetKey: keyof typeof DOME_CONFIGURATION;
-    private uiManager: UIManager;
+/**
+ * Class used to create buttons for navigating to different viewpoints. 
+ */
+export class ViewpointButton { 
+    private _name: string;
+    private _scene: Scene;
+    private _mesh: Mesh;
+    private _tooltip: Tooltip;
+    private _material: StandardMaterial;
+    private _materialActive: StandardMaterial;
+    private _domeManager: DomeManager;
+    private _targetKey: keyof typeof DOME_CONFIGURATION;
+    private _targetPath: string;
+    private _uiManager: UIManager;
 
+    /**
+     * Creates a new button used to navigate to different viewpoints. 
+     * 
+     * @param name name used for the button geometry. 
+     * @param size size of the button. 
+     * @param scene scene the button gets attached to. 
+     * @param material material of the button. 
+     * @param materialActive material of the button if hovered over. 
+     * @param position position of the button in 3D space. 
+     * @param domeManager domeManager object associated with the current domeExplorer instance. 
+     * @param targetPath texture path of the targeted dome.  
+     * @param targetKey key of the targeted dome in the configuration. 
+     * @param targetName name of the targeted dome. 
+     * @param uiManager uiManager associated with the current domeExplorer instance. 
+     */
     constructor(
         name: string, size: number, scene: Scene, material: StandardMaterial, materialActive: StandardMaterial, 
         position: Vector3, domeManager: DomeManager, targetPath: string, targetKey: keyof typeof DOME_CONFIGURATION, 
-        targetName: string, uiManager: UIManager) {
-        
-        this.name = name;
-        this.scene = scene;
+        targetName: string, uiManager: UIManager) 
+    {
+        this._name = name;
+        this._scene = scene;
+        this._mesh = MeshBuilder.CreatePlane("button" + this._name, {size: size}, this._scene);
+        this._mesh.position = position;
+        this._mesh.rotation.x = Math.PI / 2;
+        this._domeManager = domeManager;
+        this._targetKey = targetKey;
+        this._material = material;
+        this._materialActive = materialActive;
+        this._mesh.material = this._material;
+        this._uiManager = uiManager;
+        this._tooltip = new Tooltip(this._name, scene, this._uiManager, this._mesh, targetName);
+        this._targetPath = targetPath;
 
-        this.mesh = MeshBuilder.CreatePlane("button" + this.name, {size: size}, this.scene);
-        this.mesh.position = position;
-        this.mesh.rotation.x = Math.PI / 2;
-
-        this.domeManager = domeManager;
-        this.targetKey = targetKey;
-
-        this.material = material;
-        this.materialActive = materialActive;
-
-        this.mesh.material = this.material;
-
-        this.uiManager = uiManager;
-        this.tooltip = new Tooltip(this.name, scene, this.uiManager, this.mesh, targetName);
-
-        this.registerActions(targetPath);
+        this.registerActions();
     }
 
-    registerActions(targetPath: string): void {
-        this.mesh.actionManager = this.mesh.actionManager || new ActionManager(this.scene);
-        this.mesh.actionManager.registerAction(
+    /**
+     * Registers the actions that make the button interactive. 
+     */
+    private registerActions(): void {
+        this._mesh.actionManager = this._mesh.actionManager || new ActionManager(this._scene);
+        this._mesh.actionManager.registerAction(
             new ExecuteCodeAction(
                 ActionManager.OnPointerOverTrigger, () => {
-                    this.mesh.material = this.materialActive;
+                    this._mesh.material = this._materialActive;
                 }
             )
         );
 
-        this.mesh.actionManager.registerAction(
+        this._mesh.actionManager.registerAction(
             new ExecuteCodeAction(
                 ActionManager.OnPointerOutTrigger, () => {
-                    this.mesh.material = this.material;
+                    this._mesh.material = this._material;
                 }
             )
         );
 
-        this.mesh.actionManager.registerAction(
+        this._mesh.actionManager.registerAction(
             new ExecuteCodeAction(
                 ActionManager.OnPickTrigger, () => {
-                    this.domeManager.domeKey = this.targetKey;
-                    this.domeManager.dome.photoTexture = new Texture(targetPath, this.scene, true, false, Texture.TRILINEAR_SAMPLINGMODE);
-                    this.domeManager.initDomeViewpoints();
+                    this._domeManager.domeKey = this._targetKey;
+                    this._domeManager.dome.photoTexture = new Texture(this._targetPath, this._scene, true, false, Texture.TRILINEAR_SAMPLINGMODE);
+                    this._domeManager.initDomeViewpoints();
                 }
             )
         );
     }
 
-    dispose() {
-        this.mesh.dispose();
+    /**
+     * disposes of the button mesh. 
+     */
+    public dispose(): void {
+        this._mesh.dispose();
     }
 }
