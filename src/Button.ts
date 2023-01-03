@@ -23,8 +23,8 @@ export class ViewpointButton {
      * Creates a new button used to navigate to different viewpoints. 
      * 
      * @param name name used for the button geometry. 
-     * @param size size of the button. 
      * @param scene scene the button gets attached to. 
+     * @param size size of the button. 
      * @param material material of the button. 
      * @param materialActive material of the button if hovered over. 
      * @param position position of the button in 3D space. 
@@ -35,7 +35,7 @@ export class ViewpointButton {
      * @param uiManager uiManager associated with the current domeExplorer instance. 
      */
     constructor(
-        name: string, size: number, scene: Scene, material: StandardMaterial, materialActive: StandardMaterial, 
+        name: string, scene: Scene, size: number, material: StandardMaterial, materialActive: StandardMaterial, 
         position: Vector3, domeManager: DomeManager, targetPath: string, targetKey: keyof typeof DOME_CONFIGURATION, 
         targetName: string, uiManager: UIManager) 
     {
@@ -82,7 +82,7 @@ export class ViewpointButton {
                 ActionManager.OnPickTrigger, () => {
                     this._domeManager.domeKey = this._targetKey;
                     this._domeManager.dome.photoTexture = new Texture(this._targetPath, this._scene, true, false, Texture.TRILINEAR_SAMPLINGMODE);
-                    this._domeManager.initDomeViewpoints();
+                    this._domeManager.initDomeButtons();
                 }
             )
         );

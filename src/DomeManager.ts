@@ -69,7 +69,7 @@ export class DomeManager {
     /**
      * A really disgusting implementation. 
      */
-    public initDomeViewpoints(): void {
+    public initDomeButtons(): void {
         // Remove the old set of viewpoint buttons. 
         for(var i = 0; i < this._viewButtons.length; i++) {
             this._viewButtons[i].dispose();
@@ -84,7 +84,7 @@ export class DomeManager {
             let buttonPosition = getPositionFromPixelPosition(currentDome.hotspots[j].position, currentDome.resolution, BUTTON_DISTANCE);
             
             let button = new ViewpointButton(
-                "button", BUTTON_SIZE, this._scene, this._viewButtonsMaterial, this._viewButtonsMaterialActive, 
+                "button", this._scene, BUTTON_SIZE, this._viewButtonsMaterial, this._viewButtonsMaterialActive, 
                 buttonPosition, 
                 this,
                 DOME_CONFIGURATION[currentDome.hotspots[j].target as keyType].assetPath, //Try to avoid this casting.
@@ -98,14 +98,25 @@ export class DomeManager {
         }
     }
 
+    /**
+     * The key of the current dome. 
+     */
     public get domeKey(): keyof typeof DOME_CONFIGURATION {
         return this._domeKey;
     }
 
+    /**
+     * Sets the key for the current dome. 
+     */
     public set domeKey(key: keyof typeof DOME_CONFIGURATION) {
         this._domeKey = key;
     }
     
+    /**
+     * Returns the photo dome. 
+     * 
+     * @returns dome. 
+     */
     public get dome(): PhotoDome {
         return this._dome;
     }

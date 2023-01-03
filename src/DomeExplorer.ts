@@ -67,7 +67,7 @@ export class DomeExplorer {
     // Absolute dirt
     private initDome(): void {
         this._domeManager.initButtonMaterials();
-        this._domeManager.initDomeViewpoints();
+        this._domeManager.initDomeButtons();
     }
 
     public displayLoadingUI(): void {
