@@ -18,6 +18,9 @@ function main() {
     //     domeExplorer.hideLoadingUI();
     // }, 5000);
     domeExplorer.scene.executeWhenReady(() => domeExplorer.hideLoadingUI()); 
+    domeExplorer.uiManager.initInfoBubble();
+
+    domeExplorer.uiManager.showInfo("Welcome to my crappy little coding adventure!");
 }
 
 main();

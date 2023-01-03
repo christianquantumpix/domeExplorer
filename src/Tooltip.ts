@@ -9,7 +9,7 @@ import { UIManager } from "./UIManager";
 export class Tooltip {
     private _name: string;
     private _scene: Scene;
-    private _UIManager: UIManager;
+    private _uiManager: UIManager;
     private _targetMesh: Mesh;
     private _bubble: Rectangle;
     private _label: TextBlock;
@@ -22,20 +22,20 @@ export class Tooltip {
      * 
      * @param name name to get used in the creation of the tooltip UI geometries. 
      * @param scene scene the tooltip object will be attached to. 
-     * @param UIManager uiManager object holding the UI texture to render to. 
+     * @param uiManager uiManager object holding the UI texture to render to. 
      * @param targetMesh mesh object the tooltip is attached to. 
      * @param textContent text content of the tooltip. 
      */
-    constructor(name: string, scene: Scene, UIManager: UIManager, targetMesh: Mesh, textContent: string) {
+    constructor(name: string, scene: Scene, uiManager: UIManager, targetMesh: Mesh, textContent: string) {
         this._name = name;
         this._scene = scene;
-        this._UIManager = UIManager;
+        this._uiManager = uiManager;
         this._targetMesh = targetMesh;
         this._bubble = new Rectangle(this._name + "Rectangle");
         this._label = new TextBlock(this._name + "TextBlock");
         this._textContent = textContent;
         this._line = new Line(this._name + "Line");
-        this._dot = new Ellipse();
+        this._dot = new Ellipse(this._name + "Dot");
 
         this.initTooltipUI();
     }
@@ -53,9 +53,8 @@ export class Tooltip {
      * Initializes the tooltip geometries. 
      */
     private initShapes(): void {
-        var uiTexture = this._UIManager.UITexture;
+        var uiTexture = this._uiManager.UITexture;
 
-        this._line = new Line(this._name + "Line");
         this._line.lineWidth = 3;
         this._line.color = COLOR_MAIN;
         uiTexture.addControl(this._line);

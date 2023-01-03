@@ -105,4 +105,8 @@ export class DomeExplorer {
     public get camera(): FreeCamera {
         return this._camera;
     }
+
+    public get uiManager(): UIManager {
+        return this._uiManager;
+    }
 }
