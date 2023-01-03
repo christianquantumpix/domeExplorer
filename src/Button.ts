@@ -1,4 +1,4 @@
-import { ActionManager, ExecuteCodeAction, Mesh, MeshBuilder, Scene, StandardMaterial, Texture, Vector3 } from "babylonjs";
+import { ActionManager, Color3, ExecuteCodeAction, Mesh, MeshBuilder, Scene, StandardMaterial, Texture, Vector3 } from "babylonjs";
 import { DOME_CONFIGURATION } from "./configuration";
 import { DomeManager } from "./DomeManager";
 import { Tooltip } from "./Tooltip";

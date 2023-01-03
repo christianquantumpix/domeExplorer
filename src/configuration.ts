@@ -3,7 +3,7 @@ import { Vector2 } from "babylonjs";
 export const COLOR_MAIN = "#893131";
 export const COLOR_SECONDARY_DARK = "#3F352C";
 
-export const UI_ALPHA = .75;
+export const UI_ALPHA = 1;
 export const TOOLTIP_Y = -128;
 
 export const ASSET_PATH = '/';

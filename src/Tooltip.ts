@@ -1,5 +1,5 @@
-import { ActionManager, ExecuteCodeAction, Mesh, Scene } from "babylonjs";
-import { Rectangle, TextBlock } from "babylonjs-gui";
+import { ActionManager, Animation, ExecuteCodeAction, Mesh, Scene } from "babylonjs";
+import { Line, Rectangle, TextBlock } from "babylonjs-gui";
 import { COLOR_MAIN, TOOLTIP_Y, UI_ALPHA } from "./configuration";
 import { UIManager } from "./UIManager";
 
@@ -14,12 +14,20 @@ export class Tooltip {
         this._mesh = mesh;
         this._UIManager = UIManager;
         this._scene = scene;
-
-        this.initializeTooltipUI(targetName);
+        this.initTooltipUI(targetName);
     }
 
-    initializeTooltipUI(targetName: string) {
+    initTooltipUI(targetName: string) {
         var uiTexture = this._UIManager.UITexture;
+
+        var line = new Line(this._name + "Line");
+        line.alpha = 0.5;
+        line.lineWidth = 4;
+        line.dash = [5, 10];
+        line.color = COLOR_MAIN;
+        uiTexture.addControl(line);
+
+        line.linkWithMesh(this._mesh);
 
         var bubble = new Rectangle(this._name + "Rectangle");
         bubble.width = "192px";
@@ -31,27 +39,74 @@ export class Tooltip {
         bubble.background = COLOR_MAIN;
         uiTexture.addControl(bubble);
 
+        bubble.linkWithMesh(this._mesh);
+        bubble.linkOffsetY = TOOLTIP_Y;
+
+        line.connectedControl = bubble;
+
         var text = new TextBlock(this._name + "TextBlock");
         text.text = targetName;
         text.fontSize = "16rem"
         text.color = "#ffffff";
+        text.textWrapping = true;
         bubble.addControl(text);
 
-        bubble.linkWithMesh(this._mesh);   
-        bubble.linkOffsetY = TOOLTIP_Y;
-
+        line.isVisible = false;
         bubble.isVisible = false;
 
-        this.registerActions(bubble);
+        this.initAnimations(bubble);
+        this.registerActions(bubble, line);
     }
 
-    registerActions(bubble: Rectangle) {
+    initAnimations(bubble: Rectangle) {
+        // Animation behavior
+        let scaleXAnimation = new Animation("scaleX", "scaleX", 30, Animation.ANIMATIONTYPE_FLOAT, Animation.ANIMATIONLOOPMODE_CONSTANT);
+        let scaleYAnimation = new Animation("scaleY", "scaleY", 30, Animation.ANIMATIONTYPE_FLOAT, Animation.ANIMATIONLOOPMODE_CONSTANT);
+
+        let keys = [];
+
+        keys.push({
+            frame: 0,
+            value: 0
+        });
+        keys.push({
+            frame: 10,
+            value: 1
+        });
+
+        scaleXAnimation.setKeys(keys);
+        scaleYAnimation.setKeys(keys);
+
+        bubble.animations = bubble.animations || [];
+
+        bubble.animations.push(scaleXAnimation);
+        bubble.animations.push(scaleYAnimation);
+
+        let moveUpAnimation = new Animation("moveUp", "linkOffsetY", 30, Animation.ANIMATIONTYPE_SIZE, Animation.ANIMATIONLOOPMODE_CONSTANT);
+        let keysMoveUp = []
+
+        keysMoveUp.push({
+            frame: 0,
+            value: 0
+        });
+        keysMoveUp.push({
+            frame: 0,
+            value: TOOLTIP_Y
+        });
+
+        moveUpAnimation.setKeys(keysMoveUp);
+        bubble.animations.push(moveUpAnimation);
+    }
+
+    registerActions(bubble: Rectangle, line: Line) {
         this._mesh.actionManager = this._mesh.actionManager || new ActionManager(this._scene);
 
         this._mesh.actionManager.registerAction(
             new ExecuteCodeAction(
                 ActionManager.OnPointerOverTrigger, () => {
-                    bubble.isVisible = true;                  
+                    bubble.isVisible = true;
+                    line.isVisible = true;
+                    this._scene.beginAnimation(bubble, 0, 10, false);
                 }
             )
         );
@@ -60,6 +115,7 @@ export class Tooltip {
             new ExecuteCodeAction(
                 ActionManager.OnPointerOutTrigger, () => {
                     bubble.isVisible = false;
+                    line.isVisible = false;
                 }
             )
         );
@@ -68,6 +124,7 @@ export class Tooltip {
             new ExecuteCodeAction(
                 ActionManager.OnPickTrigger, () => {
                     bubble.isVisible = false;
+                    line.isVisible = false;
                 }
             )
         );
