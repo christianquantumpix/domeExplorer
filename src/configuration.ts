@@ -1,22 +1,31 @@
 import { Vector2 } from "babylonjs";
 
-export const COLOR_MAIN = "#893131";
-export const COLOR_SECONDARY_DARK = "#3F352C";
-
-export const UI_ALPHA = 1;
-export const TOOLTIP_Y = -128;
-
+// Paths: 
 export const ASSET_PATH = '/';
-
 export const VIEWPOINT_TEXTURE = ASSET_PATH + "textures/button.png";
 export const VIEWPOINT_ACTIVE_TEXTURE = ASSET_PATH + "textures/buttonActive.png";
 
+// Scaling: 
 export const DOME_DIAMETER = 1000;
 export const BUTTON_DISTANCE = DOME_DIAMETER * .45;
 export const BUTTON_SIZE = DOME_DIAMETER * .1;
 
+// Camera: 
 export const FOV_HORIZONTAL = Math.PI * .4;
 
+// Color palette: 
+export const COLOR_MAIN = "#893131";
+export const COLOR_SECONDARY_DARK = "#3F352C";
+export const COLOR_SECONDARY_LIGHT = "#BCA089";
+export const COLOR_TERTIARY = "#FFC14D";
+export const COLOR_BLACK = "#000000";
+export const COLOR_WHITE = "#FFFFFF";
+
+// UI: 
+export const UI_ALPHA = 1;
+export const TOOLTIP_Y = -192;
+
+// Dome presets: 
 export const DOME_CONFIGURATION = {
     corridor: {
         name: "Corridor",

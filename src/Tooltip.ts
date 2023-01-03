@@ -1,5 +1,5 @@
 import { ActionManager, Animation, ExecuteCodeAction, Mesh, Scene } from "babylonjs";
-import { Line, Rectangle, TextBlock } from "babylonjs-gui";
+import { Ellipse, Line, Rectangle, TextBlock } from "babylonjs-gui";
 import { COLOR_MAIN, TOOLTIP_Y, UI_ALPHA } from "./configuration";
 import { UIManager } from "./UIManager";
 
@@ -14,6 +14,7 @@ export class Tooltip {
         this._mesh = mesh;
         this._UIManager = UIManager;
         this._scene = scene;
+
         this.initTooltipUI(targetName);
     }
 
@@ -21,24 +22,27 @@ export class Tooltip {
         var uiTexture = this._UIManager.UITexture;
 
         var line = new Line(this._name + "Line");
-        line.alpha = 0.5;
-        line.lineWidth = 4;
-        line.dash = [5, 10];
+        line.lineWidth = 3;
         line.color = COLOR_MAIN;
         uiTexture.addControl(line);
-
         line.linkWithMesh(this._mesh);
+
+        var circle = new Ellipse();
+        circle.width = "8px";
+        circle.height = "8px";
+        circle.thickness = 0;
+        circle.background = COLOR_MAIN;
+        uiTexture.addControl(circle);
+        circle.linkWithMesh(this._mesh);  
 
         var bubble = new Rectangle(this._name + "Rectangle");
         bubble.width = "192px";
         bubble.height = "40px";
-        bubble.cornerRadius = 20;
-        bubble.color = "#ffffff";
-        bubble.alpha = UI_ALPHA;
         bubble.thickness = 3;
-        bubble.background = COLOR_MAIN;
+        bubble.cornerRadius = 20;
+        bubble.color = COLOR_MAIN;
+        bubble.background = "#ffffff";
         uiTexture.addControl(bubble);
-
         bubble.linkWithMesh(this._mesh);
         bubble.linkOffsetY = TOOLTIP_Y;
 
@@ -47,58 +51,63 @@ export class Tooltip {
         var text = new TextBlock(this._name + "TextBlock");
         text.text = targetName;
         text.fontSize = "16rem"
-        text.color = "#ffffff";
+        text.fontWeight = "bold";
+        text.color = COLOR_MAIN;
         text.textWrapping = true;
         bubble.addControl(text);
 
-        line.isVisible = false;
         bubble.isVisible = false;
+        line.isVisible = false;
+        circle.isVisible = false;
 
-        this.initAnimations(bubble);
-        this.registerActions(bubble, line);
+        this.initAnimations(bubble, line, circle);
+        this.registerActions(bubble, line, circle);
     }
 
-    initAnimations(bubble: Rectangle) {
-        // Animation behavior
-        let scaleXAnimation = new Animation("scaleX", "scaleX", 30, Animation.ANIMATIONTYPE_FLOAT, Animation.ANIMATIONLOOPMODE_CONSTANT);
-        let scaleYAnimation = new Animation("scaleY", "scaleY", 30, Animation.ANIMATIONTYPE_FLOAT, Animation.ANIMATIONLOOPMODE_CONSTANT);
+    initAnimations(bubble: Rectangle, line: Line, circle: Ellipse) {
+        bubble.animations = bubble.animations || [];
+        line.animations = line.animations || [];
+        circle.animations = circle.animations || [];
 
-        let keys = [];
+        let scaleXAnim = new Animation("scaleX", "scaleX", 30, Animation.ANIMATIONTYPE_FLOAT, Animation.ANIMATIONLOOPMODE_CONSTANT);
+        let scaleYAnim = new Animation("scaleY", "scaleY", 30, Animation.ANIMATIONTYPE_FLOAT, Animation.ANIMATIONLOOPMODE_CONSTANT);
 
-        keys.push({
+        let keysScale = [];
+
+        keysScale.push({
             frame: 0,
             value: 0
         });
-        keys.push({
+        keysScale.push({
             frame: 10,
             value: 1
         });
 
-        scaleXAnimation.setKeys(keys);
-        scaleYAnimation.setKeys(keys);
+        scaleXAnim.setKeys(keysScale);
+        scaleYAnim.setKeys(keysScale);
 
-        bubble.animations = bubble.animations || [];
+        let fadeInAnim = new Animation("alpha", "alpha", 30, Animation.ANIMATIONTYPE_FLOAT, Animation.ANIMATIONLOOPMODE_CONSTANT);
+        let keysFade = []
 
-        bubble.animations.push(scaleXAnimation);
-        bubble.animations.push(scaleYAnimation);
-
-        let moveUpAnimation = new Animation("moveUp", "linkOffsetY", 30, Animation.ANIMATIONTYPE_SIZE, Animation.ANIMATIONLOOPMODE_CONSTANT);
-        let keysMoveUp = []
-
-        keysMoveUp.push({
+        keysFade.push({
             frame: 0,
             value: 0
         });
-        keysMoveUp.push({
-            frame: 0,
-            value: TOOLTIP_Y
+        keysFade.push({
+            frame: 10,
+            value: 1
         });
 
-        moveUpAnimation.setKeys(keysMoveUp);
-        bubble.animations.push(moveUpAnimation);
+        fadeInAnim.setKeys(keysFade);
+
+        bubble.animations.push(scaleXAnim);
+        bubble.animations.push(scaleYAnim);
+        bubble.animations.push(fadeInAnim);
+        line.animations.push(fadeInAnim);
+        circle.animations.push(fadeInAnim);
     }
 
-    registerActions(bubble: Rectangle, line: Line) {
+    registerActions(bubble: Rectangle, line: Line, circle: Ellipse) {
         this._mesh.actionManager = this._mesh.actionManager || new ActionManager(this._scene);
 
         this._mesh.actionManager.registerAction(
@@ -106,7 +115,10 @@ export class Tooltip {
                 ActionManager.OnPointerOverTrigger, () => {
                     bubble.isVisible = true;
                     line.isVisible = true;
+                    circle.isVisible = true;
                     this._scene.beginAnimation(bubble, 0, 10, false);
+                    this._scene.beginAnimation(line, 0, 10, false);
+                    this._scene.beginAnimation(circle, 0, 10, false);
                 }
             )
         );
@@ -116,6 +128,7 @@ export class Tooltip {
                 ActionManager.OnPointerOutTrigger, () => {
                     bubble.isVisible = false;
                     line.isVisible = false;
+                    circle.isVisible = false;
                 }
             )
         );
@@ -125,6 +138,7 @@ export class Tooltip {
                 ActionManager.OnPickTrigger, () => {
                     bubble.isVisible = false;
                     line.isVisible = false;
+                    circle.isVisible = false;
                 }
             )
         );
