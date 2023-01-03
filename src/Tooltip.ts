@@ -1,73 +1,103 @@
 import { ActionManager, Animation, ExecuteCodeAction, Mesh, Scene } from "babylonjs";
 import { Ellipse, Line, Rectangle, TextBlock } from "babylonjs-gui";
-import { COLOR_MAIN, TOOLTIP_Y, UI_ALPHA } from "./configuration";
+import { COLOR_MAIN, TOOLTIP_Y } from "./configuration";
 import { UIManager } from "./UIManager";
 
+/**
+ * Class for creating a tooltip attached to a mesh. 
+ */
 export class Tooltip {
     private _name: string;
-    private _mesh: Mesh;
-    private _UIManager: UIManager;
     private _scene: Scene;
+    private _UIManager: UIManager;
+    private _targetMesh: Mesh;
+    private _bubble: Rectangle;
+    private _label: TextBlock;
+    private _textContent: string;
+    private _line: Line;
+    private _dot: Ellipse;
 
-    constructor(name: string, scene: Scene, mesh: Mesh, UIManager: UIManager, targetName: string) {
+    /**
+     * Creates a tooltip attached to a target mesh in the scene. 
+     * 
+     * @param name name to get used in the creation of the tooltip UI geometries. 
+     * @param scene scene the tooltip object will be attached to. 
+     * @param UIManager uiManager object holding the UI texture to render to. 
+     * @param targetMesh mesh object the tooltip is attached to. 
+     * @param textContent text content of the tooltip. 
+     */
+    constructor(name: string, scene: Scene, UIManager: UIManager, targetMesh: Mesh, textContent: string) {
         this._name = name;
-        this._mesh = mesh;
-        this._UIManager = UIManager;
         this._scene = scene;
+        this._UIManager = UIManager;
+        this._targetMesh = targetMesh;
+        this._bubble = new Rectangle(this._name + "Rectangle");
+        this._label = new TextBlock(this._name + "TextBlock");
+        this._textContent = textContent;
+        this._line = new Line(this._name + "Line");
+        this._dot = new Ellipse();
 
-        this.initTooltipUI(targetName);
+        this.initTooltipUI();
     }
 
-    initTooltipUI(targetName: string) {
+    /**
+     * Initializes the tooltip UI. 
+     */
+    private initTooltipUI(): void {
+        this.initShapes();
+        this.initAnimations();
+        this.registerActions();
+    }
+
+    /**
+     * Initializes the tooltip geometries. 
+     */
+    private initShapes(): void {
         var uiTexture = this._UIManager.UITexture;
 
-        var line = new Line(this._name + "Line");
-        line.lineWidth = 3;
-        line.color = COLOR_MAIN;
-        uiTexture.addControl(line);
-        line.linkWithMesh(this._mesh);
+        this._line = new Line(this._name + "Line");
+        this._line.lineWidth = 3;
+        this._line.color = COLOR_MAIN;
+        uiTexture.addControl(this._line);
+        this._line.linkWithMesh(this._targetMesh);
 
-        var circle = new Ellipse();
-        circle.width = "8px";
-        circle.height = "8px";
-        circle.thickness = 0;
-        circle.background = COLOR_MAIN;
-        uiTexture.addControl(circle);
-        circle.linkWithMesh(this._mesh);  
+        this._dot.width = "8px";
+        this._dot.height = "8px";
+        this._dot.thickness = 0;
+        this._dot.background = COLOR_MAIN;
+        uiTexture.addControl(this._dot);
+        this._dot.linkWithMesh(this._targetMesh);  
 
-        var bubble = new Rectangle(this._name + "Rectangle");
-        bubble.width = "192px";
-        bubble.height = "40px";
-        bubble.thickness = 3;
-        bubble.cornerRadius = 20;
-        bubble.color = COLOR_MAIN;
-        bubble.background = "#ffffff";
-        uiTexture.addControl(bubble);
-        bubble.linkWithMesh(this._mesh);
-        bubble.linkOffsetY = TOOLTIP_Y;
+        this._bubble.width = "192px";
+        this._bubble.height = "40px";
+        this._bubble.thickness = 3;
+        this._bubble.cornerRadius = 20;
+        this._bubble.color = COLOR_MAIN;
+        this._bubble.background = "#ffffff";
+        uiTexture.addControl(this._bubble);
+        this._bubble.linkWithMesh(this._targetMesh);
+        this._bubble.linkOffsetY = TOOLTIP_Y;
+        this._line.connectedControl = this._bubble;
 
-        line.connectedControl = bubble;
+        this._label.text = this._textContent;
+        this._label.fontSize = "16rem"
+        this._label.fontWeight = "bold";
+        this._label.color = COLOR_MAIN;
+        this._label.textWrapping = true;
+        this._bubble.addControl(this._label);
 
-        var text = new TextBlock(this._name + "TextBlock");
-        text.text = targetName;
-        text.fontSize = "16rem"
-        text.fontWeight = "bold";
-        text.color = COLOR_MAIN;
-        text.textWrapping = true;
-        bubble.addControl(text);
-
-        bubble.isVisible = false;
-        line.isVisible = false;
-        circle.isVisible = false;
-
-        this.initAnimations(bubble, line, circle);
-        this.registerActions(bubble, line, circle);
+        this._bubble.isVisible = false;
+        this._line.isVisible = false;
+        this._dot.isVisible = false;
     }
 
-    initAnimations(bubble: Rectangle, line: Line, circle: Ellipse) {
-        bubble.animations = bubble.animations || [];
-        line.animations = line.animations || [];
-        circle.animations = circle.animations || [];
+    /**
+     * Initializes the animations for the tooltip UI. 
+     */
+    private initAnimations(): void {
+        this._bubble.animations = this._bubble.animations || [];
+        this._line.animations = this._line.animations || [];
+        this._dot.animations = this._dot.animations || [];
 
         let scaleXAnim = new Animation("scaleX", "scaleX", 30, Animation.ANIMATIONTYPE_FLOAT, Animation.ANIMATIONLOOPMODE_CONSTANT);
         let scaleYAnim = new Animation("scaleY", "scaleY", 30, Animation.ANIMATIONTYPE_FLOAT, Animation.ANIMATIONLOOPMODE_CONSTANT);
@@ -79,7 +109,7 @@ export class Tooltip {
             value: 0
         });
         keysScale.push({
-            frame: 10,
+            frame: 8,
             value: 1
         });
 
@@ -94,51 +124,65 @@ export class Tooltip {
             value: 0
         });
         keysFade.push({
-            frame: 10,
+            frame: 8,
             value: 1
         });
 
         fadeInAnim.setKeys(keysFade);
 
-        bubble.animations.push(scaleXAnim);
-        bubble.animations.push(scaleYAnim);
-        bubble.animations.push(fadeInAnim);
-        line.animations.push(fadeInAnim);
-        circle.animations.push(fadeInAnim);
+        this._bubble.animations.push(scaleXAnim);
+        this._bubble.animations.push(scaleYAnim);
+        this._bubble.animations.push(fadeInAnim);
+        this._line.animations.push(fadeInAnim);
+        this._dot.animations.push(fadeInAnim);
     }
 
-    registerActions(bubble: Rectangle, line: Line, circle: Ellipse) {
-        this._mesh.actionManager = this._mesh.actionManager || new ActionManager(this._scene);
+    /**
+     * Registers the actions that make the tooltip UI interactive. 
+     */
+    private registerActions(): void {
+        this._targetMesh.actionManager = this._targetMesh.actionManager || new ActionManager(this._scene);
 
-        this._mesh.actionManager.registerAction(
+        this._targetMesh.actionManager.registerAction(
             new ExecuteCodeAction(
                 ActionManager.OnPointerOverTrigger, () => {
-                    bubble.isVisible = true;
-                    line.isVisible = true;
-                    circle.isVisible = true;
-                    this._scene.beginAnimation(bubble, 0, 10, false);
-                    this._scene.beginAnimation(line, 0, 10, false);
-                    this._scene.beginAnimation(circle, 0, 10, false);
+                    this._scene.stopAnimation(this._bubble);
+                    this._scene.stopAnimation(this._line);
+                    this._scene.stopAnimation(this._dot);
+                    this._bubble.isVisible = true;
+                    this._line.isVisible = true;
+                    this._dot.isVisible = true;
                 }
             )
         );
 
-        this._mesh.actionManager.registerAction(
+        this._targetMesh.actionManager.registerAction(
             new ExecuteCodeAction(
-                ActionManager.OnPointerOutTrigger, () => {
-                    bubble.isVisible = false;
-                    line.isVisible = false;
-                    circle.isVisible = false;
+                ActionManager.OnPointerOutTrigger, () => { 
+                    this._scene.beginAnimation(this._bubble, 8, 0, false, 1, () => {
+                        this._bubble.isVisible = false;
+                        this._bubble.alpha = 1;
+                        this._bubble.scaleX = 1;
+                        this._bubble.scaleY = 1;
+                    });
+                    this._scene.beginAnimation(this._line, 8, 0, false, 1, () => {
+                        this._line.isVisible = false;
+                        this._line.alpha = 1;
+                    });
+                    this._scene.beginAnimation(this._dot, 8, 0, false, 1, () => {
+                        this._dot.isVisible = false
+                        this._dot.alpha = 1;
+                    });
                 }
             )
         );
 
-        this._mesh.actionManager.registerAction(
+        this._targetMesh.actionManager.registerAction(
             new ExecuteCodeAction(
                 ActionManager.OnPickTrigger, () => {
-                    bubble.isVisible = false;
-                    line.isVisible = false;
-                    circle.isVisible = false;
+                    this._bubble.isVisible = false;
+                    this._line.isVisible = false;
+                    this._dot.isVisible = false;
                 }
             )
         );

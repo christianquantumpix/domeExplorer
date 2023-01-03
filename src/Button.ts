@@ -1,31 +1,19 @@
-import { ActionManager, Color3, ExecuteCodeAction, Mesh, MeshBuilder, Scene, StandardMaterial, Texture, Vector3 } from "babylonjs";
+import { ActionManager, ExecuteCodeAction, Mesh, MeshBuilder, Scene, StandardMaterial, Texture, Vector3 } from "babylonjs";
 import { DOME_CONFIGURATION } from "./configuration";
 import { DomeManager } from "./DomeManager";
 import { Tooltip } from "./Tooltip";
 import { UIManager } from "./UIManager";
 
-export interface Button {
-    mesh: Mesh;
-    material: StandardMaterial;
-    materialActive: StandardMaterial;
-
-    //dispose(): void {}
-} 
-
-export class ViewpointButton implements Button { //implements Button
-    name: string;
-    scene: Scene;
-
-    mesh: Mesh;
-    tooltip: Tooltip;
-
-    material: StandardMaterial;
-    materialActive: StandardMaterial;
-
-    domeManager: DomeManager;
-    targetKey: keyof typeof DOME_CONFIGURATION;
-
-    uiManager: UIManager;
+export class ViewpointButton { //implements Button
+    private name: string;
+    private scene: Scene;
+    private mesh: Mesh;
+    private tooltip: Tooltip;
+    private material: StandardMaterial;
+    private materialActive: StandardMaterial;
+    private domeManager: DomeManager;
+    private targetKey: keyof typeof DOME_CONFIGURATION;
+    private uiManager: UIManager;
 
     constructor(
         name: string, size: number, scene: Scene, material: StandardMaterial, materialActive: StandardMaterial, 
@@ -48,7 +36,7 @@ export class ViewpointButton implements Button { //implements Button
         this.mesh.material = this.material;
 
         this.uiManager = uiManager;
-        this.tooltip = new Tooltip(this.name, scene, this.mesh, this.uiManager, targetName);
+        this.tooltip = new Tooltip(this.name, scene, this.uiManager, this.mesh, targetName);
 
         this.registerActions(targetPath);
     }
@@ -76,7 +64,6 @@ export class ViewpointButton implements Button { //implements Button
                 ActionManager.OnPickTrigger, () => {
                     this.domeManager.domeKey = this.targetKey;
                     this.domeManager.dome.photoTexture = new Texture(targetPath, this.scene, true, false, Texture.TRILINEAR_SAMPLINGMODE);
-                    
                     this.domeManager.initDomeViewpoints();
                 }
             )

@@ -1,5 +1,5 @@
-import { Engine, FreeCamera, Scene, Vector3 } from "babylonjs";
-import { FOV_HORIZONTAL } from "./configuration";
+import { Color4, Engine, FreeCamera, Scene, Vector3 } from "babylonjs";
+import { COLOR_MAIN, FOV_HORIZONTAL } from "./configuration";
 import { DomeManager } from "./DomeManager";
 import { LoadingScreen } from "./LoadingScreen";
 import { PageManager } from "./PageManager";
@@ -29,6 +29,7 @@ export class DomeExplorer {
     }
 
     private initLoadingUI(): void {
+        this._scene.clearColor = Color4.FromHexString(COLOR_MAIN);
         this._engine.loadingScreen = this._loadingScreen;
     }
 
