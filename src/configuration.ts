@@ -8,7 +8,7 @@ export const VIEWPOINT_ACTIVE_TEXTURE = ASSET_PATH + "textures/buttonActive.png"
 // Scaling: 
 export const DOME_DIAMETER = 1000;
 export const BUTTON_DISTANCE = DOME_DIAMETER * .45;
-export const BUTTON_SIZE = DOME_DIAMETER * .1;
+export const BUTTON_SIZE = DOME_DIAMETER * .075;
 
 // Camera: 
 export const FOV_HORIZONTAL = Math.PI * .4;
