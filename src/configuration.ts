@@ -18,22 +18,31 @@ export const BUTTON_SIZE = DOME_DIAMETER * .1;
 export const FOV_HORIZONTAL = Math.PI * .4;
 
 export const DOME_CONFIGURATION = {
-    kitchen: {
-        name: "Kitchen",
-        assetPath: ASSET_PATH + "textures/brown_photostudio_06.webp",
-        resolution: new Vector2(1560, 780),
+    corridor: {
+        name: "Corridor",
+        assetPath: ASSET_PATH + "textures/corridor.webp",
+        resolution: new Vector2(4096, 2048),
         hotspots: [
-            {position: new Vector2(260, 450), target: "bathroom"},
+            {position: new Vector2(430, 1520), target: "mainHall"},
+            {position: new Vector2(3360, 1260), target: "oldRoom"}
         ]
     },
-    bathroom: {
-        name: "Bathroom",
-        assetPath: ASSET_PATH + "textures/brown_photostudio_07.webp",
-        resolution: new Vector2(1560, 780),
+    mainHall: {
+        name: "Main hall",
+        assetPath: ASSET_PATH + "textures/mainHall.webp",
+        resolution: new Vector2(4096, 2048),
         hotspots: [
-            {position: new Vector2(600, 480), target: "kitchen"},
+            {position: new Vector2(1400, 1250), target: "corridor"},
+        ]
+    },
+    oldRoom: {
+        name: "Old room",
+        assetPath: ASSET_PATH + "textures/oldRoom.webp",
+        resolution: new Vector2(4096, 2048),
+        hotspots: [
+            {position: new Vector2(440, 1350), target: "corridor"},
         ]
     }
 };
 
-export const DOME_STARTING_KEY = "kitchen";
+export const DOME_STARTING_KEY = "corridor";
