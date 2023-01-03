@@ -1,5 +1,5 @@
 # domeExplorer
-A simple 360°- image click through application. 
+A simple 360°- panorama click through application. 
 Written in TypeScript and built with Webpack.
 ## Installation
 Install dendencies using "npm install": 
