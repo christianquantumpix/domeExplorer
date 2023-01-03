@@ -15,10 +15,6 @@ export class UIManager {
         this._infoBubbleText = new TextBlock("infoText");
     }
 
-    public get UITexture(): AdvancedDynamicTexture {
-        return this._uiTexture;
-    }
-
     public initInfoBubble() {
         this._infoBubble.verticalAlignment = Control.VERTICAL_ALIGNMENT_TOP;
         this._infoBubble.top = "32px";
@@ -41,7 +37,7 @@ export class UIManager {
         this._infoBubbleText.isVisible = false;
     }
 
-    public showInfo(message: string): void {
+    public showInfo(message: string, duration: number): void {
         this._infoBubbleText.text = message;
         this._infoBubble.isVisible = true;
         this._infoBubbleText.isVisible = true;
@@ -50,7 +46,12 @@ export class UIManager {
             () => {
                 this._infoBubble.isVisible = false;
                 this._infoBubbleText.isVisible = false;
-            }, 3000
+            }, 
+            duration
         );
+    }
+
+    public get UITexture(): AdvancedDynamicTexture {
+        return this._uiTexture;
     }
 }

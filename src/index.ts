@@ -20,7 +20,7 @@ function main() {
     domeExplorer.scene.executeWhenReady(() => domeExplorer.hideLoadingUI()); 
     domeExplorer.uiManager.initInfoBubble();
 
-    domeExplorer.uiManager.showInfo("Welcome to my crappy little coding adventure!");
+    domeExplorer.uiManager.showInfo("Welcome to my crappy little coding adventure!", 3000);
 }
 
 main();
