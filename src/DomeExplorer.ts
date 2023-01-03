@@ -1,5 +1,5 @@
-import { Color4, Engine, FreeCamera, Scene, Vector3 } from "babylonjs";
-import { COLOR_MAIN, FOV_HORIZONTAL } from "./configuration";
+import { Engine, FreeCamera, Scene, Vector3 } from "babylonjs";
+import { FOV_HORIZONTAL } from "./configuration";
 import { DomeManager } from "./DomeManager";
 import { LoadingScreen } from "./LoadingScreen";
 import { PageManager } from "./PageManager";
@@ -41,7 +41,7 @@ export class DomeExplorer {
 
     private initCamera(): void {
         this._camera.attachControl(this._pageManager.renderCanvas, true);
-        this._camera.inputs.remove(this._camera.inputs.attached.FreeCameraKeyboardMoveInput);
+        this._camera.inputs.attached.keyboard.detachControl();  
         this._camera.fov = FOV_HORIZONTAL;
     }
 
