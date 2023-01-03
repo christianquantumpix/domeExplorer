@@ -1,3 +1,14 @@
 # domeExplorer
+## Installation
 Install dendencies using "npm install". 
-build with "npm run build", serve with "npm run serve".
+
+```bash
+npm install babylonjs
+```
+among lots of other things.
+
+## Build
+Build with "npm run build"
+
+## Serve
+Serve with "npm run serve".
