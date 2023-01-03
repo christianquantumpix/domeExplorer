@@ -1,17 +1,18 @@
 # domeExplorer
+A simple 360° image application using Babylon.js, allowing for a network of panoramas to click through. 
+Written in TypeScript and built with Webpack.
 ## Installation
-Install dendencies using "npm install". 
+Install dendencies using "npm install": 
 ```bash
-npm install babylonjs
+npm install
 ```
-among lots of other things.
 ## Build
-Build with
+Build with:
 ```bash
 npm run build
 ```
 ## Serve
-Serve with "npm run serve".
+Serve on development server with:
 ```bash
 npm run serve
 ```
