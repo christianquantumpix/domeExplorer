@@ -1,4 +1,4 @@
-import { PhotoDome, Scene, StandardMaterial, Texture } from "babylonjs";
+import { PhotoDome, Scene } from "babylonjs";
 import { ViewpointButton } from "./Button";
 import { BUTTON_DISTANCE, BUTTON_SIZE, DOME_CONFIGURATION, DOME_DIAMETER, DOME_STARTING_KEY, VIEWPOINT_ACTIVE_TEXTURE, VIEWPOINT_TEXTURE } from "./configuration";
 import { getPositionFromPixelPosition } from "./getPositionFromPixelPosition";
@@ -12,11 +12,6 @@ export class DomeManager {
     private _domeKey: keyof typeof DOME_CONFIGURATION;
     private _dome: PhotoDome;
     private _viewButtons: Array<ViewpointButton>;
-
-    // This should probably happen somewhere else. 
-    private _viewButtonsMaterial: StandardMaterial;
-    private _viewButtonsMaterialActive: StandardMaterial;
-
     private _uiManager: UIManager;
 
     /**
@@ -29,7 +24,6 @@ export class DomeManager {
         this._domeKey = DOME_STARTING_KEY;
         this._dome = new PhotoDome("dome", DOME_CONFIGURATION[this._domeKey].assetPath, {size: DOME_DIAMETER}, this._scene);
         this._viewButtons = [];
-        this._viewButtonsMaterial = this._viewButtonsMaterialActive = new StandardMaterial("placeholder", this._scene);
         this._uiManager = uiManager;
     }
 
