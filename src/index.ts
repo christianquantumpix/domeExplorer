@@ -1,3 +1,4 @@
+import { WELCOME } from "./configuration";
 import { DomeExplorer } from "./DomeExplorer";
 import { PageManager } from "./PageManager";
 
@@ -20,7 +21,7 @@ function main() {
     domeExplorer.scene.executeWhenReady(() => domeExplorer.hideLoadingUI()); 
     domeExplorer.uiManager.initInfoBubble();
 
-    domeExplorer.uiManager.showInfo("Welcome to my crappy little coding adventure!", 3000);
+    domeExplorer.uiManager.showInfo(WELCOME, 8000);
 }
 
 main();

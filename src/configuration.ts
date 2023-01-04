@@ -25,6 +25,9 @@ export const COLOR_WHITE = "#FFFFFF";
 export const UI_ALPHA = 1;
 export const TOOLTIP_Y = -192;
 
+// Messages: 
+export const WELCOME = "Welcome to the dome explorer! Use the mouse to look around and click on the target icons to move to another view point. ";
+
 // Dome presets: 
 export const DOME_CONFIGURATION = {
     corridor: {

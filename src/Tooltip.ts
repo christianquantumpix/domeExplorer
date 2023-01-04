@@ -53,7 +53,7 @@ export class Tooltip {
      * Initializes the tooltip geometries. 
      */
     private initShapes(): void {
-        var uiTexture = this._uiManager.UITexture;
+        let uiTexture = this._uiManager.uiCanvas;
 
         this._line.lineWidth = 3;
         this._line.color = COLOR_MAIN;
