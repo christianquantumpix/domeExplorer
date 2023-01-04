@@ -1,10 +1,14 @@
 import { Color4, Engine, FreeCamera, Scene, Vector3 } from "babylonjs";
+import { ViewpointButton } from "./Button";
 import { COLOR_MAIN, FOV_HORIZONTAL } from "./configuration";
 import { DomeManager } from "./DomeManager";
 import { LoadingScreen } from "./LoadingScreen";
 import { PageManager } from "./PageManager";
 import { UIManager } from "./UIManager";
 
+/**
+ * Class used for handling the apps main functionality. 
+ */
 export class DomeExplorer {
     private _pageManager: PageManager;
     private _loadingScreen: LoadingScreen;
@@ -14,6 +18,11 @@ export class DomeExplorer {
     private _uiManager: UIManager;
     private _domeManager: DomeManager;
 
+    /**
+     * Creates a new dome explorer app instance. 
+     * 
+     * @param pageManager page manager object containing the page layout to work on. 
+     */
     constructor(pageManager: PageManager) {
         this._pageManager = pageManager;
         this._loadingScreen = new LoadingScreen(this._pageManager.loadingScreenContainer); // Create a loading screen. 
@@ -28,11 +37,17 @@ export class DomeExplorer {
         this.initLoadingUI();
     }
 
+    /**
+     * Initializes the loading UI. 
+     */
     private initLoadingUI(): void {
         this._scene.clearColor = Color4.FromHexString(COLOR_MAIN);
         this._engine.loadingScreen = this._loadingScreen;
     }
 
+    /**
+     * Initializes the scene. 
+     */
     public initScene(): void {
         this.initCamera();
         this.initInspector();
@@ -40,12 +55,18 @@ export class DomeExplorer {
         this.initDome();
     }
 
+    /**
+     * Initializes the camera. 
+     */
     private initCamera(): void {
         this._camera.attachControl(this._pageManager.renderCanvas, true);
         this._camera.inputs.attached.keyboard.detachControl();  
         this._camera.fov = FOV_HORIZONTAL;
     }
 
+    /**
+     * Initializes the inspector functionality for debugging. 
+     */
     private initInspector(): void {
         window.addEventListener("keydown", (ev) => {
             if (ev.shiftKey && ev.ctrlKey && ev.altKey && ev.key === 'i') {
@@ -58,54 +79,85 @@ export class DomeExplorer {
         });
     }
 
-    private initResizing() {
+    /**
+     * Attaches a listener to the window object to handle resizing of the render canvas. 
+     */
+    private initResizing(): void {
         window.addEventListener("resize", () => {
             this._engine.resize();
         });
     }
 
-    // Absolute dirt
+    /**
+     * Initializes the dome globally. 
+     */
     private initDome(): void {
-        this._domeManager.initButtonMaterials();
+        ViewpointButton.initMaterials();
         this._domeManager.initDomeButtons();
     }
 
+    /**
+     * Displays the loading UI. 
+     */
     public displayLoadingUI(): void {
         this._engine.displayLoadingUI();
     }
 
+    /**
+     * Hides the loading UI. 
+     */
     public hideLoadingUI(): void {
         this._engine.hideLoadingUI();
         this._engine.resize(); // Figure out why this is needed and avoid. 
     }
 
+    /**
+     * Begins rendering the scene. 
+     */
     public beginRender(): void {
         this._engine.runRenderLoop(() => {
             this._scene.render();
         });
     }
 
-    // Getters and setters: 
+    /**
+     * the page menager. 
+     */
     public get pageManager(): PageManager {
         return this._pageManager;
     }
 
+    /**
+     * the engine. 
+     */
     public get engine(): Engine {
         return this._engine;
     }
-
+    
+    /**
+     * the loading screen. 
+     */
     public get loadingScreen(): LoadingScreen {
         return this._loadingScreen;
     } 
 
+    /**
+     * the scene. 
+     */
     public get scene(): Scene {
         return this._scene;
     }
 
+    /**
+     * the camera. 
+     */
     public get camera(): FreeCamera {
         return this._camera;
     }
 
+    /**
+     * the UI manager. 
+     */
     public get uiManager(): UIManager {
         return this._uiManager;
     }

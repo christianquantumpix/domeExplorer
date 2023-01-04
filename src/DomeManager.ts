@@ -34,39 +34,6 @@ export class DomeManager {
     }
 
     /**
-     * Initializes the materials for buttons. 
-     */
-    public initButtonMaterials(): void {
-        this._viewButtonsMaterial.dispose();
-        this._viewButtonsMaterialActive.dispose();
-
-        var buttonMaterial = new StandardMaterial("viewButton", this._scene);
-        var buttonMaterialActive = new StandardMaterial("viewButtonActive", this._scene);
-
-        buttonMaterial.useAlphaFromDiffuseTexture = true;
-        buttonMaterialActive.useAlphaFromDiffuseTexture = true;
-        buttonMaterial.alpha = 0.75;
-        buttonMaterialActive.alpha = 0.75;
-        buttonMaterial.disableLighting = true;
-        buttonMaterialActive.disableLighting = true;
-
-        let texture = new Texture(VIEWPOINT_TEXTURE, this._scene, false, true, Texture.TRILINEAR_SAMPLINGMODE);
-        let textureActive = new Texture(VIEWPOINT_ACTIVE_TEXTURE, this._scene, false, true, Texture.TRILINEAR_SAMPLINGMODE);
-        texture.hasAlpha = true;
-        textureActive.hasAlpha = true;
-        texture.anisotropicFilteringLevel = 16;
-        textureActive.anisotropicFilteringLevel = 16;
-
-        buttonMaterial.diffuseTexture = texture;
-        buttonMaterial.emissiveTexture = texture;
-        buttonMaterialActive.diffuseTexture = textureActive;
-        buttonMaterialActive.emissiveTexture = textureActive;
-
-        this._viewButtonsMaterial = buttonMaterial;
-        this._viewButtonsMaterialActive = buttonMaterialActive;
-    }
-
-    /**
      * A really disgusting implementation. 
      */
     public initDomeButtons(): void {
@@ -84,9 +51,7 @@ export class DomeManager {
             let buttonPosition = getPositionFromPixelPosition(currentDome.hotspots[j].position, currentDome.resolution, BUTTON_DISTANCE);
             
             let button = new ViewpointButton(
-                "button", this._scene, BUTTON_SIZE, this._viewButtonsMaterial, this._viewButtonsMaterialActive, 
-                buttonPosition, 
-                this,
+                "button", this._scene, BUTTON_SIZE, buttonPosition, this,
                 DOME_CONFIGURATION[currentDome.hotspots[j].target as keyType].assetPath, //Try to avoid this casting.
                 DOME_CONFIGURATION[this._domeKey].hotspots[j].target as keyType, // Try to avoid this casting. 
                 DOME_CONFIGURATION[currentDome.hotspots[j].target as keyType].name, // Try to avoid this casting. 

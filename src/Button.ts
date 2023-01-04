@@ -1,5 +1,5 @@
 import { ActionManager, ExecuteCodeAction, Mesh, MeshBuilder, Scene, StandardMaterial, Texture, Vector3 } from "babylonjs";
-import { DOME_CONFIGURATION } from "./configuration";
+import { DOME_CONFIGURATION, VIEWPOINT_ACTIVE_TEXTURE, VIEWPOINT_TEXTURE } from "./configuration";
 import { DomeManager } from "./DomeManager";
 import { Tooltip } from "./Tooltip";
 import { UIManager } from "./UIManager";
@@ -12,12 +12,13 @@ export class ViewpointButton {
     private _scene: Scene;
     private _mesh: Mesh;
     private _tooltip: Tooltip;
-    private _material: StandardMaterial;
-    private _materialActive: StandardMaterial;
     private _domeManager: DomeManager;
     private _targetKey: keyof typeof DOME_CONFIGURATION;
     private _targetPath: string;
     private _uiManager: UIManager;
+
+    private static _material: StandardMaterial;
+    private static _materialActive: StandardMaterial;
 
     /**
      * Creates a new button used to navigate to different viewpoints. 
@@ -35,7 +36,7 @@ export class ViewpointButton {
      * @param uiManager uiManager associated with the current domeExplorer instance. 
      */
     constructor(
-        name: string, scene: Scene, size: number, material: StandardMaterial, materialActive: StandardMaterial, 
+        name: string, scene: Scene, size: number, 
         position: Vector3, domeManager: DomeManager, targetPath: string, targetKey: keyof typeof DOME_CONFIGURATION, 
         targetName: string, uiManager: UIManager) 
     {
@@ -46,14 +47,39 @@ export class ViewpointButton {
         this._mesh.rotation.x = Math.PI / 2;
         this._domeManager = domeManager;
         this._targetKey = targetKey;
-        this._material = material;
-        this._materialActive = materialActive;
-        this._mesh.material = this._material;
+        this._mesh.material = ViewpointButton._material;
         this._uiManager = uiManager;
         this._tooltip = new Tooltip(this._name, scene, this._uiManager, this._mesh, targetName);
         this._targetPath = targetPath;
 
         this.registerActions();
+    }
+
+    public static initMaterials(): void {
+        var buttonMaterial = new StandardMaterial("viewButton");
+        var buttonMaterialActive = new StandardMaterial("viewButtonActive");
+
+        buttonMaterial.useAlphaFromDiffuseTexture = true;
+        buttonMaterialActive.useAlphaFromDiffuseTexture = true;
+        buttonMaterial.alpha = 0.75;
+        buttonMaterialActive.alpha = 0.75;
+        buttonMaterial.disableLighting = true;
+        buttonMaterialActive.disableLighting = true;
+
+        let texture = new Texture(VIEWPOINT_TEXTURE, undefined, false, true, Texture.TRILINEAR_SAMPLINGMODE);
+        let textureActive = new Texture(VIEWPOINT_ACTIVE_TEXTURE, undefined, false, true, Texture.TRILINEAR_SAMPLINGMODE);
+        texture.hasAlpha = true;
+        textureActive.hasAlpha = true;
+        texture.anisotropicFilteringLevel = 16;
+        textureActive.anisotropicFilteringLevel = 16;
+
+        buttonMaterial.diffuseTexture = texture;
+        buttonMaterial.emissiveTexture = texture;
+        buttonMaterialActive.diffuseTexture = textureActive;
+        buttonMaterialActive.emissiveTexture = textureActive;
+
+        ViewpointButton._material = buttonMaterial;
+        ViewpointButton._materialActive = buttonMaterialActive;
     }
 
     /**
@@ -64,7 +90,7 @@ export class ViewpointButton {
         this._mesh.actionManager.registerAction(
             new ExecuteCodeAction(
                 ActionManager.OnPointerOverTrigger, () => {
-                    this._mesh.material = this._materialActive;
+                    this._mesh.material = ViewpointButton._materialActive;
                 }
             )
         );
@@ -72,7 +98,7 @@ export class ViewpointButton {
         this._mesh.actionManager.registerAction(
             new ExecuteCodeAction(
                 ActionManager.OnPointerOutTrigger, () => {
-                    this._mesh.material = this._material;
+                    this._mesh.material = ViewpointButton._material;
                 }
             )
         );

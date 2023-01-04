@@ -1,6 +1,6 @@
 import { Animation, Scene } from "babylonjs";
 import { AdvancedDynamicTexture, Control, Rectangle, TextBlock } from "babylonjs-gui";
-import { COLOR_MAIN } from "./configuration";
+import { COLOR_MAIN, COLOR_WHITE, TEXT_SIZE } from "./configuration";
 
 /**
  * Class used for managing a global UI canvas and global UI elements. 
@@ -38,18 +38,16 @@ export class UIManager {
         this._infoBubble.verticalAlignment = Control.VERTICAL_ALIGNMENT_TOP;
         this._infoBubble.top = "32px";
         this._infoBubble.width = "512px";
-        this._infoBubble.height = "64px";
-        this._infoBubble.thickness = 3;
+        this._infoBubble.height = "88px";
+        this._infoBubble.thickness = 0;
         this._infoBubble.cornerRadius = 20;
-        this._infoBubble.color = COLOR_MAIN;
-        this._infoBubble.background = "#ffffff";
+        this._infoBubble.background = COLOR_MAIN;
         this._uiCanvas.addControl(this._infoBubble);
 
-        this._infoBubbleText.fontSize = "16rem"
-        this._infoBubbleText.fontWeight = "bold";
-        this._infoBubbleText.color = COLOR_MAIN;
+        this._infoBubbleText.fontSize = TEXT_SIZE;
+        this._infoBubbleText.color = COLOR_WHITE;
         this._infoBubbleText.textWrapping = true;
-        this._infoBubbleText.setPadding(8, 8, 8, 8);
+        this._infoBubbleText.setPadding(12, 12, 12, 12);
         this._infoBubble.addControl(this._infoBubbleText);
 
         this._infoBubble.isVisible = false;

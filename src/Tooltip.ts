@@ -1,6 +1,6 @@
 import { ActionManager, Animation, ExecuteCodeAction, Mesh, Scene } from "babylonjs";
 import { Ellipse, Line, Rectangle, TextBlock } from "babylonjs-gui";
-import { COLOR_MAIN, TOOLTIP_Y } from "./configuration";
+import { COLOR_MAIN, COLOR_WHITE, TEXT_SIZE, TOOLTIP_Y } from "./configuration";
 import { UIManager } from "./UIManager";
 
 /**
@@ -68,20 +68,18 @@ export class Tooltip {
         this._dot.linkWithMesh(this._targetMesh);  
 
         this._bubble.width = "192px";
-        this._bubble.height = "40px";
-        this._bubble.thickness = 3;
+        this._bubble.height = "36px";
+        this._bubble.thickness = 0;
         this._bubble.cornerRadius = 20;
-        this._bubble.color = COLOR_MAIN;
-        this._bubble.background = "#ffffff";
+        this._bubble.background = COLOR_MAIN;
         uiTexture.addControl(this._bubble);
         this._bubble.linkWithMesh(this._targetMesh);
         this._bubble.linkOffsetY = TOOLTIP_Y;
         this._line.connectedControl = this._bubble;
 
         this._label.text = this._textContent;
-        this._label.fontSize = "16rem"
-        this._label.fontWeight = "bold";
-        this._label.color = COLOR_MAIN;
+        this._label.fontSize = TEXT_SIZE;
+        this._label.color = COLOR_WHITE;
         this._label.textWrapping = true;
         this._bubble.addControl(this._label);
 

@@ -14,7 +14,7 @@ export const BUTTON_SIZE = DOME_DIAMETER * .075;
 export const FOV_HORIZONTAL = Math.PI * .4;
 
 // Color palette: 
-export const COLOR_MAIN = "#893131";
+export const COLOR_MAIN = "#367496";
 export const COLOR_SECONDARY_DARK = "#3F352C";
 export const COLOR_SECONDARY_LIGHT = "#BCA089";
 export const COLOR_TERTIARY = "#FFC14D";
@@ -22,6 +22,7 @@ export const COLOR_BLACK = "#000000";
 export const COLOR_WHITE = "#FFFFFF";
 
 // UI: 
+export const TEXT_SIZE = "18rem";
 export const UI_ALPHA = 1;
 export const TOOLTIP_Y = -192;
 
