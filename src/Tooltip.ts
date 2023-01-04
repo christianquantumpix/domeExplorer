@@ -1,6 +1,6 @@
 import { ActionManager, Animation, ExecuteCodeAction, Mesh, Scene } from "babylonjs";
 import { Ellipse, Line, Rectangle, TextBlock } from "babylonjs-gui";
-import { COLOR_MAIN, COLOR_WHITE, TEXT_SIZE, TOOLTIP_Y } from "./configuration";
+import { COLOR_MAIN, COLOR_WHITE, CAPTION_SIZE, TOOLTIP_Y } from "./configuration";
 import { UIManager } from "./UIManager";
 
 /**
@@ -67,10 +67,13 @@ export class Tooltip {
         uiTexture.addControl(this._dot);
         this._dot.linkWithMesh(this._targetMesh);  
 
-        this._bubble.width = "192px";
+        let width = this._textContent.length * 18;
+
+        this._bubble.adaptWidthToChildren = true;
         this._bubble.height = "36px";
-        this._bubble.thickness = 0;
-        this._bubble.cornerRadius = 20;
+        this._bubble.thickness = 1;
+        this._bubble.color = COLOR_WHITE;
+        this._bubble.cornerRadius = 4;
         this._bubble.background = COLOR_MAIN;
         uiTexture.addControl(this._bubble);
         this._bubble.linkWithMesh(this._targetMesh);
@@ -78,7 +81,8 @@ export class Tooltip {
         this._line.connectedControl = this._bubble;
 
         this._label.text = this._textContent;
-        this._label.fontSize = TEXT_SIZE;
+        this._label.width = String(width + "px");
+        this._label.fontSize = CAPTION_SIZE;
         this._label.color = COLOR_WHITE;
         this._label.textWrapping = true;
         this._bubble.addControl(this._label);
@@ -101,14 +105,8 @@ export class Tooltip {
 
         let keysScale = [];
 
-        keysScale.push({
-            frame: 0,
-            value: 0
-        });
-        keysScale.push({
-            frame: 8,
-            value: 1
-        });
+        keysScale.push({frame: 0, value: 0});
+        keysScale.push({frame: 8, value: 1});
 
         scaleXAnim.setKeys(keysScale);
         scaleYAnim.setKeys(keysScale);
@@ -116,14 +114,8 @@ export class Tooltip {
         let fadeInAnim = new Animation("alpha", "alpha", 30, Animation.ANIMATIONTYPE_FLOAT, Animation.ANIMATIONLOOPMODE_CONSTANT);
         let keysFade = []
 
-        keysFade.push({
-            frame: 0,
-            value: 0
-        });
-        keysFade.push({
-            frame: 8,
-            value: 1
-        });
+        keysFade.push({frame: 0, value: 0});
+        keysFade.push({frame: 8,value: 1});
 
         fadeInAnim.setKeys(keysFade);
 

@@ -8,7 +8,7 @@ export const VIEWPOINT_ACTIVE_TEXTURE = ASSET_PATH + "textures/buttonActive.png"
 // Scaling: 
 export const DOME_DIAMETER = 1000;
 export const BUTTON_DISTANCE = DOME_DIAMETER * .45;
-export const BUTTON_SIZE = DOME_DIAMETER * .075;
+export const BUTTON_SIZE = DOME_DIAMETER * .1;
 
 // Camera: 
 export const FOV_HORIZONTAL = Math.PI * .4;
@@ -22,7 +22,8 @@ export const COLOR_BLACK = "#000000";
 export const COLOR_WHITE = "#FFFFFF";
 
 // UI: 
-export const TEXT_SIZE = "18rem";
+export const CAPTION_SIZE = "18rem";
+export const TEXT_SIZE = "16rem";
 export const UI_ALPHA = 1;
 export const TOOLTIP_Y = -192;
 

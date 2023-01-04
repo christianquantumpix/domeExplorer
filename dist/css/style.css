@@ -1,3 +1,13 @@
+:root {
+    /* Color palette: */
+    --COLOR_MAIN: "#367496";
+    --COLOR_SECONDARY_DARK: "#3F352C";
+    --COLOR_SECONDARY_LIGHT: "#BCA089";
+    --COLOR_TERTIARY: "#FFC14D";
+    --COLOR_BLACK: "#000000";
+    --COLOR_WHITE: "#FFFFFF";
+}
+
 html,
 body {
     overflow: hidden;
@@ -53,7 +63,7 @@ body {
     /* font-family: 'Times New Roman', Times, serif; */
     font-size: 1.2rem;
     text-align: center;
-    color: #fff;
+    color: var(--COLOR_WHITE);
 }
 
 .loaderText {
@@ -62,13 +72,13 @@ body {
     font-size: 1.6rem;
     font-style: italic;
     text-align: center;
-    color: #fff;
+    color: var(--COLOR_WHITE);
 }
 
 .loadingScreenLampAnimation {
     width: 4px;
     height: 196px;
-    background: #fff;
+    background: var(--COLOR_WHITE);
     margin: auto;
     position: relative;
     animation: shake 2s linear infinite alternate,
@@ -85,7 +95,7 @@ body {
     width: 32px;
     height: 16px;
     box-sizing: border-box;
-    border: 5px solid #FFC14D;
+    border: 5px solid var(--COLOR_TERTIARY);
     border-top: none;
     border-radius: 0 0 20px 20px;
 }
@@ -99,7 +109,7 @@ body {
     width: 64px;
     height: 32px;
     border-radius: 50px 50px 0 0;
-    background: #fff;
+    background: var(--COLOR_WHITE);
 }
 
 @keyframes shake {

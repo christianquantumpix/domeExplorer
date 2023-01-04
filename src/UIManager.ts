@@ -10,6 +10,7 @@ export class UIManager {
     private _uiCanvas: AdvancedDynamicTexture;
     private _infoBubble: Rectangle;
     private _infoBubbleText: TextBlock;
+    private _loadingBar: Rectangle;
    
     /**
      * Creates a global UI with a global info bubble for a given scene. 
@@ -21,6 +22,7 @@ export class UIManager {
         this._uiCanvas = AdvancedDynamicTexture.CreateFullscreenUI("uiCanvas", true, this._scene);
         this._infoBubble = new Rectangle("controlsExplanationBubble");
         this._infoBubbleText = new TextBlock("infoText");
+        this._loadingBar = new Rectangle("loadingBar");
     }
 
     /**
@@ -36,14 +38,28 @@ export class UIManager {
      */
     private initShapes(): void {
         this._infoBubble.verticalAlignment = Control.VERTICAL_ALIGNMENT_TOP;
-        this._infoBubble.top = "32px";
+        this._infoBubble.top = "24px";
+
         this._infoBubble.width = "512px";
-        this._infoBubble.height = "88px";
-        this._infoBubble.thickness = 0;
-        this._infoBubble.cornerRadius = 20;
+        //this._infoBubble.adaptWidthToChildren = true;
+
+        this._infoBubble.height = "72px";
+        this._infoBubble.thickness = 1;
+        this._infoBubble.color = COLOR_WHITE;
+        this._infoBubble.cornerRadius = 4;
         this._infoBubble.background = COLOR_MAIN;
         this._uiCanvas.addControl(this._infoBubble);
 
+        this._loadingBar.verticalAlignment = Control.VERTICAL_ALIGNMENT_BOTTOM;
+        this._loadingBar.width = "512px";
+        this._loadingBar.height = "8px";
+        this._loadingBar.transformCenterX = 0;
+        this._loadingBar.thickness = 0;
+        this._loadingBar.alpha = .5;
+        this._loadingBar.background = COLOR_WHITE;
+        this._infoBubble.addControl(this._loadingBar);
+
+        this._infoBubbleText.textVerticalAlignment = Control.VERTICAL_ALIGNMENT_TOP;
         this._infoBubbleText.fontSize = TEXT_SIZE;
         this._infoBubbleText.color = COLOR_WHITE;
         this._infoBubbleText.textWrapping = true;
@@ -62,14 +78,8 @@ export class UIManager {
 
         let keysScale = [];
 
-        keysScale.push({
-            frame: 0,
-            value: 0
-        });
-        keysScale.push({
-            frame: 8,
-            value: 1
-        });
+        keysScale.push({frame: 0, value: 0});
+        keysScale.push({frame: 8, value: 1});
 
         scaleXAnim.setKeys(keysScale);
         scaleYAnim.setKeys(keysScale);
@@ -83,10 +93,13 @@ export class UIManager {
         fadeInAnim.setKeys(keysFade);
 
         this._infoBubble.animations = this._infoBubble.animations || [];
+        this._loadingBar.animations = this._loadingBar.animations || [];
 
         this._infoBubble.animations.push(scaleXAnim);
         this._infoBubble.animations.push(scaleYAnim);
         this._infoBubble.animations.push(fadeInAnim);
+
+        this._loadingBar.animations.push(scaleXAnim);
     };
 
     /**
@@ -98,7 +111,6 @@ export class UIManager {
     public showInfo(message: string, durationMS: number): void {
         this._infoBubbleText.text = message;
         this._infoBubble.isVisible = true;
-        //this._infoBubbleText.isVisible = true;
 
         window.setTimeout(
             () => {
@@ -111,6 +123,8 @@ export class UIManager {
             }, 
             durationMS
         );
+        
+        this._scene.beginAnimation(this._loadingBar, 8, 0, false, 8 * 1000 / (30 * durationMS));
     }
 
     /**
