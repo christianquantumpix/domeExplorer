@@ -22,8 +22,8 @@ export const COLOR_BLACK = "#000000";
 export const COLOR_WHITE = "#FFFFFF";
 
 // UI: 
-export const CAPTION_SIZE = "18rem";
-export const TEXT_SIZE = "16rem";
+export const CAPTION_SIZE = "18px";
+export const TEXT_SIZE = "16px";
 export const UI_ALPHA = 1;
 export const TOOLTIP_Y = -192;
 
@@ -42,7 +42,7 @@ export const DOME_CONFIGURATION = {
         ]
     },
     mainHall: {
-        name: "Main hall",
+        name: "Main hall lanfairdoodoogoogoogogoovhh sjsajkdhsajhd",
         assetPath: ASSET_PATH + "textures/mainHall.webp",
         resolution: new Vector2(4096, 2048),
         hotspots: [

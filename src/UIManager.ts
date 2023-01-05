@@ -108,9 +108,17 @@ export class UIManager {
      * @param message the string to show do the user. 
      * @param durationMS the duration to show the message for in milliseconds.  
      */
-    public showInfo(message: string, durationMS: number): void {
+    public showInfo(message: string, durationMS: number, delayMS?: number): void {
+        let delay = delayMS || 0;
+
         this._infoBubbleText.text = message;
-        this._infoBubble.isVisible = true;
+
+        window.setTimeout(
+            () => {
+                this._infoBubble.isVisible = true;
+            },
+            delay
+        ); 
 
         window.setTimeout(
             () => {
@@ -121,7 +129,7 @@ export class UIManager {
                     this._infoBubble.scaleY = 1;
                 });
             }, 
-            durationMS
+            durationMS + delay
         );
         
         this._scene.beginAnimation(this._loadingBar, 8, 0, false, 8 * 1000 / (30 * durationMS));

@@ -20,8 +20,6 @@ export class DomeExplorer {
 
     /**
      * Creates a new dome explorer app instance. 
-     * 
-     * @param pageManager page manager object containing the page layout to work on. 
      */
     constructor() {
         this._pageManager = new PageManager();
@@ -38,7 +36,7 @@ export class DomeExplorer {
         this.initLoadingUI();
         this.displayLoadingUI();     
         this.initScene();
-        this.hideLoadingUI();
+        this.hideLoadingUIWhenLoaded();
         this.showWelcomeMessage();
     }
 
@@ -60,7 +58,7 @@ export class DomeExplorer {
     /**
      * Initializes the scene. 
      */
-    public initScene(): void {
+    private initScene(): void {
         this.initCamera();
         this.initInspector();
         this.initResizing();
@@ -110,20 +108,36 @@ export class DomeExplorer {
     }
 
     /**
+     * Begins rendering the scene. 
+     */
+    private beginRender(): void {
+        this._engine.runRenderLoop(() => {
+            this._scene.render();
+        });
+    }
+
+    /**
      * Displays the loading UI. 
      */
-    public displayLoadingUI(): void {
+    private displayLoadingUI(): void {
         this._engine.displayLoadingUI();
     }
 
     /**
      * Hides the loading UI. 
      */
-    public hideLoadingUI(): void {
-        this._scene.executeWhenReady(() => {
-            this._engine.hideLoadingUI();
-        });
+    private hideLoadingUI(): void {
+        this._engine.hideLoadingUI();
         this._engine.resize(); // Figure out why this is needed and avoid. 
+    }
+
+    /**
+     * Listens for the scene being ready and hides the loading UI. 
+     */
+    private hideLoadingUIWhenLoaded() {
+        this._scene.executeWhenReady(() => {
+            this.hideLoadingUI();
+        });
     }
 
     /**
@@ -132,16 +146,7 @@ export class DomeExplorer {
     private showWelcomeMessage() {
         this._scene.executeWhenReady(() => {
             this.uiManager.initInfoBubble();
-            this.uiManager.showInfo(MESSAGE_WELCOME, 8000);
-        });
-    }
-
-    /**
-     * Begins rendering the scene. 
-     */
-    public beginRender(): void {
-        this._engine.runRenderLoop(() => {
-            this._scene.render();
+            this.uiManager.showInfo(MESSAGE_WELCOME, 8000, 1000);
         });
     }
 

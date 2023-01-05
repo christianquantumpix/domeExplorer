@@ -5,14 +5,19 @@ import { RANDOM_FACTS } from "./randomFacts";
  * Class for managing the creation of DOM elements for a domeExplorer instance.
  */
 export class PageManager {
+    private _appContainer: HTMLElement;
     private _renderCanvas: HTMLCanvasElement;
     private _loadingScreenContainer: HTMLDivElement;
     private _isInitialized: boolean;
 
     /**
      * Manages the creation of DOM elements for an domeExplorer instance. 
+     * 
+     * @param appContainer div element to render the app instance in. 
      */
-    constructor() {
+    constructor();
+    constructor(appContainer?: HTMLDivElement) {
+        this._appContainer = appContainer || document.body;
         this._renderCanvas = document.createElement("canvas");
         this._loadingScreenContainer = document.createElement("div");
         this._isInitialized = false;
@@ -38,7 +43,7 @@ export class PageManager {
      */
     private initializeLoadingScreenContainer(): void {
         this._loadingScreenContainer.classList.add("loadingScreenContainer");
-        document.body.appendChild(this._loadingScreenContainer);
+        this._appContainer.appendChild(this._loadingScreenContainer);
 
         let loadingScreenLampAnimation = document.createElement("div");
         loadingScreenLampAnimation.classList.add("loadingScreenLampAnimation");
@@ -73,7 +78,7 @@ export class PageManager {
      */
     private initializeCanvas(): void {
         this._renderCanvas.classList.add("renderCanvas");
-        document.body.appendChild(this._renderCanvas);
+        this._appContainer.appendChild(this._renderCanvas);
     }
 
     /**
