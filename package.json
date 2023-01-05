@@ -5,9 +5,9 @@
   "main": "./src/index.ts",
   "scripts": {
     "init": "tsc --init",
-    "build": "webpack",
+    "build": "webpack --config webpack.dev.js",
     "build:prod": "webpack --config webpack.prod.js",
-    "serve": "webpack-dev-server"
+    "serve": "webpack serve --config webpack.dev.js"
   },
   "keywords": [],
   "author": "",

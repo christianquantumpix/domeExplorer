@@ -2,7 +2,7 @@
 A simple 360°- panorama click through application. 
 Written in TypeScript and built with Webpack.
 ## Installation
-Install dendencies using "npm install": 
+Install dendencies: 
 ```bash
 npm install
 ```
@@ -11,8 +11,13 @@ Build with:
 ```bash
 npm run build
 ```
+## Build for production
+Build for production with:
+```bash
+npm run build:prod
+```
 ## Serve
-Serve on a local development server (port 5050) with sourcemaps enabled:
+Serve on a local development server (port: 5500) with sourcemaps enabled:
 ```bash
 npm run serve
 ```
