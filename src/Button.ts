@@ -49,7 +49,7 @@ export class ViewpointButton {
         this._targetKey = targetKey;
         this._mesh.material = ViewpointButton._material;
         this._uiManager = uiManager;
-        this._tooltip = new Tooltip(this._name, scene, this._uiManager, this._mesh, targetName);
+        this._tooltip = new Tooltip(this._name, scene, this._uiManager, this._mesh, targetName); // Async?
         this._targetPath = targetPath;
 
         this.registerActions();

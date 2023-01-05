@@ -24,7 +24,10 @@ export class Tooltip {
      * @param scene scene the tooltip object will be attached to. 
      * @param uiManager uiManager object holding the UI texture to render to. 
      * @param targetMesh mesh object the tooltip is attached to. 
+     * @param bubble rectangle object that represents the information bubble. 
      * @param textContent text content of the tooltip. 
+     * @param line line object that connects the bubble to its corresponding button. 
+     * @param dot dot the line ends in. 
      */
     constructor(name: string, scene: Scene, uiManager: UIManager, targetMesh: Mesh, textContent: string) {
         this._name = name;
