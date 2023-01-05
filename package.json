@@ -4,9 +4,9 @@
   "description": "",
   "main": "./src/index.ts",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "init": "tsc --init",
     "build": "webpack",
+    "build:prod": "webpack --config webpack.prod.js",
     "serve": "webpack-dev-server"
   },
   "keywords": [],
