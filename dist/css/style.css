@@ -1,11 +1,11 @@
 :root {
     /* Color palette: */
-    --COLOR_MAIN: "#367496";
-    --COLOR_SECONDARY_DARK: "#3F352C";
-    --COLOR_SECONDARY_LIGHT: "#BCA089";
-    --COLOR_TERTIARY: "#FFC14D";
-    --COLOR_BLACK: "#000000";
-    --COLOR_WHITE: "#FFFFFF";
+    --COLOR_MAIN: #367496;
+    --COLOR_SECONDARY_DARK: #3F352C;
+    --COLOR_SECONDARY_LIGHT: #BCA089;
+    --COLOR_TERTIARY: #FFC14D;
+    --COLOR_BLACK: #000000;
+    --COLOR_WHITE: #FFFFFF;
 }
 
 html,
@@ -81,8 +81,6 @@ body {
     background: var(--COLOR_WHITE);
     margin: auto;
     position: relative;
-    animation: shake 2s linear infinite alternate, lightup 16s linear infinite;
-    transform-origin: 0 0;
 }
 
 .loadingScreenLampAnimation::before {
@@ -97,6 +95,7 @@ body {
     border: 5px solid var(--COLOR_TERTIARY);
     border-top: none;
     border-radius: 0 0 20px 20px;
+    animation: lightup 3s linear infinite;
 }
 
 .loadingScreenLampAnimation::after {
@@ -111,12 +110,9 @@ body {
     background: var(--COLOR_WHITE);
 }
 
-@keyframes shake {
-    0% {transform: rotate(11.25deg)}; 100% {transform: rotate(-11.25deg)};
-}
-
 @keyframes lightup {
-    0%, 20%, 40%, 60%, 80% {opacity: 0;}; 10%, 30%, 50%, 70%, 90% {opacity: 1;};
+    0%, 100% {opacity: 0}
+    50% {opacity: 1}
 }
 
 .loading {

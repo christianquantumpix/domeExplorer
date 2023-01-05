@@ -2,8 +2,8 @@ import { Vector2 } from "babylonjs";
 
 // Paths: 
 export const ASSET_PATH = '/';
-export const VIEWPOINT_TEXTURE = ASSET_PATH + "textures/button.png";
-export const VIEWPOINT_ACTIVE_TEXTURE = ASSET_PATH + "textures/buttonActive.png";
+export const VIEWPOINT_TEXTURE = ASSET_PATH + "textures/UI/button.png";
+export const VIEWPOINT_ACTIVE_TEXTURE = ASSET_PATH + "textures/UI/buttonActive.png";
 
 // Scaling: 
 export const DOME_DIAMETER = 1000;
@@ -42,7 +42,7 @@ export const DOME_CONFIGURATION = {
         ]
     },
     mainHall: {
-        name: "Main hall lanfairdoodoogoogoogogoovhh sjsajkdhsajhd",
+        name: "Main hall",
         assetPath: ASSET_PATH + "textures/mainHall.webp",
         resolution: new Vector2(4096, 2048),
         hotspots: [
