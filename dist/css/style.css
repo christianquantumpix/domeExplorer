@@ -81,8 +81,7 @@ body {
     background: var(--COLOR_WHITE);
     margin: auto;
     position: relative;
-    animation: shake 2s linear infinite alternate,
-        lightup 16s linear infinite;
+    animation: shake 2s linear infinite alternate, lightup 16s linear infinite;
     transform-origin: 0 0;
 }
 
@@ -113,14 +112,11 @@ body {
 }
 
 @keyframes shake {
-    0% {transform: rotate(11.25deg)}
-
-    100% {transform: rotate(-11.25deg)}
+    0% {transform: rotate(11.25deg)}; 100% {transform: rotate(-11.25deg)};
 }
 
 @keyframes lightup {
-    0%, 20%, 40%, 60%, 80% {opacity: 0;}
-    10%, 30%, 50%, 70%, 90% {opacity: 1;}
+    0%, 20%, 40%, 60%, 80% {opacity: 0;}; 10%, 30%, 50%, 70%, 90% {opacity: 1;};
 }
 
 .loading {

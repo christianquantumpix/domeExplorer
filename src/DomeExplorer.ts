@@ -1,6 +1,6 @@
 import { Color4, Engine, FreeCamera, Scene, Vector3 } from "babylonjs";
 import { ViewpointButton } from "./Button";
-import { COLOR_MAIN, FOV_HORIZONTAL } from "./configuration";
+import { COLOR_MAIN, FOV_HORIZONTAL, MESSAGE_WELCOME } from "./configuration";
 import { DomeManager } from "./DomeManager";
 import { LoadingScreen } from "./LoadingScreen";
 import { PageManager } from "./PageManager";
@@ -23,18 +23,30 @@ export class DomeExplorer {
      * 
      * @param pageManager page manager object containing the page layout to work on. 
      */
-    constructor(pageManager: PageManager) {
-        this._pageManager = pageManager;
-        this._loadingScreen = new LoadingScreen(this._pageManager.loadingScreenContainer); // Create a loading screen. 
-        
+    constructor() {
+        this._pageManager = new PageManager();
+        this._loadingScreen = new LoadingScreen(this._pageManager.loadingScreenContainer); // Create a loading screen.         
         this._engine = new Engine(this._pageManager.renderCanvas, true); // Create the babylon scene and engine. 
         this._scene = new Scene(this._engine); 
-        this._camera = new FreeCamera("camera", Vector3.Zero(), this.scene); // Create the babylon camera to render from.    
-        
+        this._camera = new FreeCamera("camera", Vector3.Zero(), this.scene); // Create the babylon camera to render from.           
         this._uiManager = new UIManager(this._scene);
         this._domeManager = new DomeManager(this._scene, this._uiManager);
+    }
 
+    public start(): void {
+        this.initPageManager();
         this.initLoadingUI();
+        this.displayLoadingUI();     
+        this.initScene();
+        this.hideLoadingUI();
+        this.showWelcomeMessage();
+    }
+
+    /**
+     * Initializes the page manager. 
+     */
+    private initPageManager(): void {
+        this._pageManager.init();
     }
 
     /**
@@ -53,6 +65,7 @@ export class DomeExplorer {
         this.initInspector();
         this.initResizing();
         this.initDome();
+        this.beginRender();
     }
 
     /**
@@ -107,8 +120,20 @@ export class DomeExplorer {
      * Hides the loading UI. 
      */
     public hideLoadingUI(): void {
-        this._engine.hideLoadingUI();
+        this._scene.executeWhenReady(() => {
+            this._engine.hideLoadingUI();
+        });
         this._engine.resize(); // Figure out why this is needed and avoid. 
+    }
+
+    /**
+     * Shows the default welcome message. 
+     */
+    private showWelcomeMessage() {
+        this._scene.executeWhenReady(() => {
+            this.uiManager.initInfoBubble();
+            this.uiManager.showInfo(MESSAGE_WELCOME, 8000);
+        });
     }
 
     /**
