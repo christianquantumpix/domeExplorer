@@ -16,7 +16,7 @@ export function getPositionFromPixelPosition(position: Vector2, resolution: Vect
 
     let positionY = Math.sin(Math.PI * (.5 - position.y / resolution.y));
 
-    // Scaling factor to normalize
+    // Scaling factor to normalize. 
     let scalingFactor = Math.cos(Math.PI * (.5 - position.y / resolution.y));
     positionX *= scalingFactor;
     positionZ *= scalingFactor;
