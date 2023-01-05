@@ -1,6 +1,6 @@
 import { Animation, Scene } from "babylonjs";
-import { AdvancedDynamicTexture, Control, Rectangle, TextBlock } from "babylonjs-gui";
-import { COLOR_MAIN, COLOR_WHITE, TEXT_SIZE } from "./configuration";
+import { AdvancedDynamicTexture, Control, Grid, Image as ImageGUI, Rectangle, TextBlock } from "babylonjs-gui";
+import { ASSET_PATH, COLOR_MAIN, COLOR_WHITE, TEXT_SIZE } from "./configuration";
 
 /**
  * Class used for managing a global UI canvas and global UI elements. 
@@ -43,12 +43,30 @@ export class UIManager {
         this._infoBubble.width = "512px";
         //this._infoBubble.adaptWidthToChildren = true;
 
-        this._infoBubble.height = "72px";
+        this._infoBubble.height = "96px";
         this._infoBubble.thickness = 1;
         this._infoBubble.color = COLOR_WHITE;
         this._infoBubble.cornerRadius = 4;
         this._infoBubble.background = COLOR_MAIN;
         this._uiCanvas.addControl(this._infoBubble);
+
+        let rows = new Grid();
+        rows.width = "512px";
+        rows.addRowDefinition(0.9);
+        rows.addRowDefinition(0.1);  
+        this._infoBubble.addControl(rows);      
+
+        let columns = new Grid();
+        columns.addColumnDefinition(.15);
+        columns.addColumnDefinition(.85);
+        rows.addControl(columns, 0, 0);
+
+        let infoIcon = new ImageGUI("b1", ASSET_PATH + "textures/UI/info.svg");
+        infoIcon.widthInPixels = 48;
+        infoIcon.heightInPixels = 48;
+        infoIcon.stretch = ImageGUI.STRETCH_UNIFORM;
+        infoIcon.leftInPixels = 12;
+        columns.addControl(infoIcon, 0, 0);
 
         this._loadingBar.verticalAlignment = Control.VERTICAL_ALIGNMENT_BOTTOM;
         this._loadingBar.width = "512px";
@@ -57,14 +75,15 @@ export class UIManager {
         this._loadingBar.thickness = 0;
         this._loadingBar.alpha = .5;
         this._loadingBar.background = COLOR_WHITE;
-        this._infoBubble.addControl(this._loadingBar);
+
+        rows.addControl(this._loadingBar, 1, 0);
 
         this._infoBubbleText.textVerticalAlignment = Control.VERTICAL_ALIGNMENT_TOP;
         this._infoBubbleText.fontSize = TEXT_SIZE;
         this._infoBubbleText.color = COLOR_WHITE;
         this._infoBubbleText.textWrapping = true;
         this._infoBubbleText.setPadding(12, 12, 12, 12);
-        this._infoBubble.addControl(this._infoBubbleText);
+        columns.addControl(this._infoBubbleText, 0, 1);
 
         this._infoBubble.isVisible = false;
     }

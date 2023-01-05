@@ -28,7 +28,7 @@ export const UI_ALPHA = 1;
 export const TOOLTIP_Y = -192;
 
 // Messages: 
-export const MESSAGE_WELCOME = "Welcome to the dome explorer! Use the mouse to look around and click on the target icons to move to another view point. ";
+export const MESSAGE_WELCOME = "Welcome to the dome explorer! \n Use the mouse to look around and click on a target to move to another view point. ";
 
 // Dome presets: 
 export const DOME_CONFIGURATION = {
