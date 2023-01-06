@@ -1,5 +1,4 @@
 import { Color4, Engine, FreeCamera, Scene, Vector3 } from "babylonjs";
-import { ViewpointButton } from "./Button";
 import { COLOR_MAIN, FOV_HORIZONTAL, MESSAGE_WELCOME } from "./configuration";
 import { DomeManager } from "./DomeManager";
 import { LoadingScreen } from "./LoadingScreen";
