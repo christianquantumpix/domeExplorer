@@ -1,7 +1,7 @@
 import { Vector2 } from "babylonjs";
 
 // Paths: 
-export const ASSET_PATH = '/';
+export const ASSET_PATH = './';
 export const TEXTURE_PATH = ASSET_PATH + 'textures/';
 export const VIEWPOINT_TEXTURE = TEXTURE_PATH + "UI/button.png";
 export const VIEWPOINT_ACTIVE_TEXTURE = TEXTURE_PATH + "UI/buttonActive.png";
