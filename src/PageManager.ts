@@ -7,7 +7,8 @@ import { RANDOM_FACTS } from "./randomFacts";
 export class PageManager {
     private _appContainer: HTMLElement;
     private _renderCanvas: HTMLCanvasElement;
-    private _loadingScreenContainer: HTMLDivElement;
+    private _loadingContainer: HTMLDivElement;
+    private _loadingText: HTMLParagraphElement;
     private _isInitialized: boolean;
 
     /**
@@ -19,7 +20,8 @@ export class PageManager {
     constructor(appContainer?: HTMLDivElement) {
         this._appContainer = appContainer || document.body;
         this._renderCanvas = document.createElement("canvas");
-        this._loadingScreenContainer = document.createElement("div");
+        this._loadingContainer = document.createElement("div");
+        this._loadingText = document.createElement("p");
         this._isInitialized = false;
     }
 
@@ -42,23 +44,23 @@ export class PageManager {
      * Avoids assigning id's to DOM elements for better readability. 
      */
     private initializeLoadingScreenContainer(): void {
-        this._loadingScreenContainer.classList.add("loadingScreenContainer");
-        this._appContainer.appendChild(this._loadingScreenContainer);
+        this._loadingContainer.classList.add("loadingScreenContainer");
+        this._appContainer.appendChild(this._loadingContainer);
 
-        let loadingScreenLampAnimation = document.createElement("div");
-        loadingScreenLampAnimation.classList.add("loadingScreenLampAnimation");
-        this._loadingScreenContainer.appendChild(loadingScreenLampAnimation);
+        let loadingLampAnimation = document.createElement("div");
+        loadingLampAnimation.classList.add("loadingScreenLampAnimation");
+        this._loadingContainer.appendChild(loadingLampAnimation);
 
         let content = document.createElement("div");
         content.classList.add("loadingScreenContent");
-        this.loadingScreenContainer.appendChild(content);
+        this.loadingContainer.appendChild(content);
 
-        let loadingScreenMascot = document.createElement("object");
-        loadingScreenMascot.type = "image/svg+xml";
-        loadingScreenMascot.data = MASCOT_TEXTURE;
-        loadingScreenMascot.height = loadingScreenMascot.width = "128px";
-        loadingScreenMascot.classList.add("loaderMascot");
-        content.appendChild(loadingScreenMascot);
+        let loadingMascot = document.createElement("object");
+        loadingMascot.type = "image/svg+xml";
+        loadingMascot.data = MASCOT_TEXTURE;
+        loadingMascot.height = loadingMascot.width = "128px";
+        loadingMascot.classList.add("loaderMascot");
+        content.appendChild(loadingMascot);
 
         let loadingScreenHeadline = document.createElement("p");
         loadingScreenHeadline.id = "loadingScreenHeadline";
@@ -66,11 +68,9 @@ export class PageManager {
         loadingScreenHeadline.innerText = "DID YOU KNOW?";
         content.appendChild(loadingScreenHeadline);
 
-        let loadingScreenText = document.createElement("p");
-        loadingScreenText.id = "loadingScreenText";
-        loadingScreenText.classList.add("loaderText");
-        loadingScreenText.innerText = RANDOM_FACTS[Math.floor(Math.random() * RANDOM_FACTS.length)];
-        content.appendChild(loadingScreenText);
+        this._loadingText.id = "loadingScreenText";
+        this._loadingText.classList.add("loaderText");
+        content.appendChild(this._loadingText);
     }
 
     /**
@@ -83,8 +83,8 @@ export class PageManager {
 
     /**
      * Canvas element to render the scene on.
-     * @type
-     * HTMLCanvasElement
+     * 
+     * @type HTMLCanvasElement
      */
     public get renderCanvas(): HTMLCanvasElement {
         return this._renderCanvas;
@@ -92,10 +92,19 @@ export class PageManager {
 
     /**
      * Div element containing the loading screen. 
-     * @type
-     * HTMLDivElement
+     * 
+     * @type HTMLDivElement
      */
-    public get loadingScreenContainer(): HTMLDivElement {
-        return this._loadingScreenContainer;
+    public get loadingContainer(): HTMLDivElement {
+        return this._loadingContainer;
+    }
+
+    /**
+     * Paragraph element containing the random text string. 
+     * 
+     * @type HTMLParagraphElement
+     */
+    public get loadingText(): HTMLParagraphElement {
+        return this._loadingText;
     }
 }

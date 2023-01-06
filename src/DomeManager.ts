@@ -27,6 +27,7 @@ export class DomeManager {
         this._uiManager = uiManager;
     }
 
+    // Move to UIManager?
     /**
      * A really disgusting implementation. 
      */

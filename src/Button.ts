@@ -107,7 +107,12 @@ export class ViewpointButton {
             new ExecuteCodeAction(
                 ActionManager.OnPickTrigger, () => {
                     this._domeManager.domeKey = this._targetKey;
-                    this._domeManager.dome.photoTexture = new Texture(this._targetPath, this._scene, true, false, Texture.TRILINEAR_SAMPLINGMODE);
+                    this._domeManager.dome.texture = new Texture(
+                        this._targetPath, this._scene, true, false, Texture.TRILINEAR_SAMPLINGMODE, () => {
+                            this._scene.getEngine().hideLoadingUI();
+                        }
+                    );
+                    this._scene.getEngine().displayLoadingUI();
                     this._domeManager.initDomeButtons();
                 }
             )

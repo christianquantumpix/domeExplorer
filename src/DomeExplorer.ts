@@ -25,7 +25,7 @@ export class DomeExplorer {
      */
     constructor() {
         this._pageManager = new PageManager();
-        this._loadingScreen = new LoadingScreen(this._pageManager.loadingScreenContainer);        
+        this._loadingScreen = new LoadingScreen(this._pageManager.loadingContainer, this._pageManager.loadingText);        
         this._engine = new Engine(this._pageManager.renderCanvas, true);
         this._scene = new Scene(this._engine);
         this._camera = new FreeCamera("camera", Vector3.Zero(), this.scene);
