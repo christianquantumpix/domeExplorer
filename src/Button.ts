@@ -11,6 +11,7 @@ export class ViewpointButton {
     private _name: string;
     private _scene: Scene;
     private _mesh: Mesh;
+    private _position: Vector3;
     private _tooltip: Tooltip;
     private _domeManager: DomeManager;
     private _targetKey: keyof typeof DOME_CONFIGURATION;
@@ -19,6 +20,7 @@ export class ViewpointButton {
 
     private static _material: StandardMaterial;
     private static _materialActive: StandardMaterial;
+    private static _materialsInitialized: boolean = false;
 
     /**
      * Creates a new button used to navigate to different viewpoints. 
@@ -36,50 +38,35 @@ export class ViewpointButton {
      * @param uiManager uiManager associated with the current domeExplorer instance. 
      */
     constructor(
-        name: string, scene: Scene, size: number, 
-        position: Vector3, domeManager: DomeManager, targetPath: string, targetKey: keyof typeof DOME_CONFIGURATION, 
-        targetName: string, uiManager: UIManager) 
+        name: string, scene: Scene, size: number, position: Vector3, domeManager: DomeManager, targetPath: string, 
+        targetKey: keyof typeof DOME_CONFIGURATION, targetName: string, uiManager: UIManager) 
     {
         this._name = name;
         this._scene = scene;
         this._mesh = MeshBuilder.CreatePlane("button" + this._name, {size: size}, this._scene);
-        this._mesh.position = position;
-        this._mesh.rotation.x = Math.PI / 2;
+        this._position = position;
         this._domeManager = domeManager;
         this._targetKey = targetKey;
-        this._mesh.material = ViewpointButton._material;
         this._uiManager = uiManager;
-        this._tooltip = new Tooltip(this._name, scene, this._uiManager, this._mesh, targetName); // Async?
+        this._tooltip = this._uiManager.createTooltip(this._name + "Tooltip", this._mesh, targetName);
         this._targetPath = targetPath;
+    }
 
+    /**
+     * Initializes the button. 
+     */
+    public init(): void {
+        this.initMesh();
         this.registerActions();
     }
 
-    public static initMaterials(): void {
-        var buttonMaterial = new StandardMaterial("viewButton");
-        var buttonMaterialActive = new StandardMaterial("viewButtonActive");
-
-        buttonMaterial.useAlphaFromDiffuseTexture = true;
-        buttonMaterialActive.useAlphaFromDiffuseTexture = true;
-        buttonMaterial.alpha = 0.75;
-        buttonMaterialActive.alpha = 0.75;
-        buttonMaterial.disableLighting = true;
-        buttonMaterialActive.disableLighting = true;
-
-        let texture = new Texture(VIEWPOINT_TEXTURE, undefined, false, true, Texture.TRILINEAR_SAMPLINGMODE);
-        let textureActive = new Texture(VIEWPOINT_ACTIVE_TEXTURE, undefined, false, true, Texture.TRILINEAR_SAMPLINGMODE);
-        texture.hasAlpha = true;
-        textureActive.hasAlpha = true;
-        texture.anisotropicFilteringLevel = 16;
-        textureActive.anisotropicFilteringLevel = 16;
-
-        buttonMaterial.diffuseTexture = texture;
-        buttonMaterial.emissiveTexture = texture;
-        buttonMaterialActive.diffuseTexture = textureActive;
-        buttonMaterialActive.emissiveTexture = textureActive;
-
-        ViewpointButton._material = buttonMaterial;
-        ViewpointButton._materialActive = buttonMaterialActive;
+    /**
+     * Initializes the button mesh. 
+     */
+    private initMesh(): void {
+        this._mesh.position = this._position;
+        this._mesh.rotation.x = Math.PI / 2;
+        this._mesh.material = ViewpointButton._material;
     }
 
     /**
@@ -120,9 +107,43 @@ export class ViewpointButton {
     }
 
     /**
+     * Initializes the button materials. 
+     */
+    public static initMaterials(): void {
+        if(!ViewpointButton._materialsInitialized) {
+            var buttonMaterial = new StandardMaterial("viewButton");
+            var buttonMaterialActive = new StandardMaterial("viewButtonActive");
+
+            buttonMaterial.useAlphaFromDiffuseTexture = true;
+            buttonMaterialActive.useAlphaFromDiffuseTexture = true;
+            buttonMaterial.alpha = 0.75;
+            buttonMaterialActive.alpha = 0.75;
+            buttonMaterial.disableLighting = true;
+            buttonMaterialActive.disableLighting = true;
+
+            let texture = new Texture(VIEWPOINT_TEXTURE, undefined, false, true, Texture.TRILINEAR_SAMPLINGMODE);
+            let textureActive = new Texture(VIEWPOINT_ACTIVE_TEXTURE, undefined, false, true, Texture.TRILINEAR_SAMPLINGMODE);
+            texture.hasAlpha = true;
+            textureActive.hasAlpha = true;
+            texture.anisotropicFilteringLevel = 16;
+            textureActive.anisotropicFilteringLevel = 16;
+
+            buttonMaterial.diffuseTexture = texture;
+            buttonMaterial.emissiveTexture = texture;
+            buttonMaterialActive.diffuseTexture = textureActive;
+            buttonMaterialActive.emissiveTexture = textureActive;
+
+            ViewpointButton._material = buttonMaterial;
+            ViewpointButton._materialActive = buttonMaterialActive;
+            ViewpointButton._materialsInitialized = true;
+        }
+    }
+
+    /**
      * disposes of the button mesh. 
      */
     public dispose(): void {
+        this._tooltip.dispose();
         this._mesh.dispose();
     }
 }

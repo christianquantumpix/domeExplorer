@@ -179,4 +179,14 @@ export class Tooltip {
             )
         );
     }
+
+    /**
+     * Disposes of the tiooltip. 
+     */
+    public dispose(): void {
+        this._bubble.dispose();
+        this._label.dispose();
+        this._line.dispose();
+        this._dot.dispose();
+    }
 }

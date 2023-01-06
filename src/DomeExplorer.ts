@@ -12,11 +12,9 @@ import { UIManager } from "./UIManager";
 export class DomeExplorer {
     private _pageManager: PageManager;
     private _loadingScreen: LoadingScreen;
-    // Maybe should be extracted into a scene manager class?
     private _engine: Engine;
     private _scene: Scene;
     private _camera: FreeCamera;
-    //
     private _domeManager: DomeManager;
     private _uiManager: UIManager;
 
@@ -105,7 +103,7 @@ export class DomeExplorer {
      * Initializes the dome globally. 
      */
     private initDome(): void {
-        ViewpointButton.initMaterials();
+        this._domeManager.init();
         this._domeManager.initDomeButtons();
     }
 
@@ -153,42 +151,54 @@ export class DomeExplorer {
     }
 
     /**
-     * the page menager. 
+     * The page manager. 
+     * 
+     * @type PageManager
      */
     public get pageManager(): PageManager {
         return this._pageManager;
     }
 
     /**
-     * the engine. 
+     * The engine. 
+     * 
+     * @type Engine
      */
     public get engine(): Engine {
         return this._engine;
     }
     
     /**
-     * the loading screen. 
+     * The loading screen. 
+     * 
+     * @type LoadingScreen
      */
     public get loadingScreen(): LoadingScreen {
         return this._loadingScreen;
     } 
 
     /**
-     * the scene. 
+     * The scene. 
+     * 
+     * @type Scene
      */
     public get scene(): Scene {
         return this._scene;
     }
 
     /**
-     * the camera. 
+     * The camera. 
+     * 
+     * @type FreeCamera
      */
     public get camera(): FreeCamera {
         return this._camera;
     }
 
     /**
-     * the UI manager. 
+     * The UI manager. 
+     * 
+     * @type UIManager
      */
     public get uiManager(): UIManager {
         return this._uiManager;

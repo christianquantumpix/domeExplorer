@@ -4,7 +4,7 @@ import { BUTTON_DISTANCE, BUTTON_SIZE, DOME_CONFIGURATION, DOME_DIAMETER, DOME_S
 import { UIManager } from "./UIManager";
 
 /**
- * Class for Managing the dome network. 
+ * Class for managing the dome network. 
  */
 export class DomeManager {
     private _scene: Scene;
@@ -22,14 +22,21 @@ export class DomeManager {
     constructor(scene: Scene, uiManager: UIManager) {
         this._scene = scene;
         this._domeKey = DOME_STARTING_KEY;
+        // Async but doesn't matter. 
         this._dome = new PhotoDome("dome", DOME_CONFIGURATION[this._domeKey].assetPath, {size: DOME_DIAMETER}, this._scene);
         this._viewButtons = [];
         this._uiManager = uiManager;
     }
 
-    // Move to UIManager?
     /**
-     * A really disgusting implementation. 
+     * Initializes the dome manager. 
+     */
+    public init(): void {
+        ViewpointButton.initMaterials();
+    }
+
+    /**
+     * Creates and places the viewpoint buttons for the current dome. 
      */
     public initDomeButtons(): void {
         // Remove the old set of viewpoint buttons. 
@@ -52,8 +59,9 @@ export class DomeManager {
                 DOME_CONFIGURATION[currentDome.hotspots[j].target as keyType].name, // Try to avoid this casting. 
                 this._uiManager
             );
+            button.init();
 
-            // Add viewpoint button to the curent list of viewpoint buttons. 
+            // Add viewpoint button to the current list of viewpoint buttons. 
             this._viewButtons.push(button);
         }
     }
@@ -68,7 +76,7 @@ export class DomeManager {
      * @returns position in 3D space. 
      */
     static getPositionFromPixelPosition(position: Vector2, resolution: Vector2, distance: number): Vector3 {
-        // Simplify this desease of a formula.
+        // Simplify this disease of a formula.
         let positionX = Math.cos(-2 * Math.PI * position.x / resolution.x);
         let positionZ = Math.sin(-2 * Math.PI * position.x / resolution.x);
 
@@ -88,6 +96,8 @@ export class DomeManager {
 
     /**
      * The key of the current dome. 
+     * 
+     * @type keyof typeof DOME_CONFIGURATION
      */
     public get domeKey(): keyof typeof DOME_CONFIGURATION {
         return this._domeKey;
@@ -95,6 +105,8 @@ export class DomeManager {
 
     /**
      * Sets the key for the current dome. 
+     * 
+     * @param key Key to set the domeKey variable to. 
      */
     public set domeKey(key: keyof typeof DOME_CONFIGURATION) {
         this._domeKey = key;
@@ -103,7 +115,7 @@ export class DomeManager {
     /**
      * Returns the photo dome. 
      * 
-     * @returns dome. 
+     * @type PhotoDome
      */
     public get dome(): PhotoDome {
         return this._dome;

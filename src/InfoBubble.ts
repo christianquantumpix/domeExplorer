@@ -15,8 +15,8 @@ export class InfoBubble {
     /**
      * Creates a info bubble to display messages within the UI. 
      * 
-     * @param scene scene object the info bubble will be attached to. 
-     * @param uiCanvas ui canvas the info bubble will be rendered on. 
+     * @param scene Scene object the info bubble will be attached to. 
+     * @param uiCanvas UI canvas the info bubble will be rendered on. 
      */
     constructor(scene: Scene, uiCanvas: AdvancedDynamicTexture) {
         this._scene = scene;
@@ -123,8 +123,9 @@ export class InfoBubble {
     /**
      * Function to show a message to the user for a limited time. 
      * 
-     * @param message the string to show do the user. 
-     * @param durationMS the duration to show the message for in milliseconds.  
+     * @param message The string to show do the user. 
+     * @param durationMS The duration to show the message for in milliseconds. 
+     * @param delayMS The delay to show the message after in milliseconds. 
      */
     public showInfo(message: string, durationMS: number, delayMS?: number): void {
         let delay = delayMS || 0;

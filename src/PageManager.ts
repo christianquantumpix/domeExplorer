@@ -1,5 +1,4 @@
 import { MASCOT_TEXTURE } from "./configuration";
-import { RANDOM_FACTS } from "./randomFacts";
 
 /**
  * Class for managing the creation of DOM elements for a domeExplorer instance.
@@ -12,7 +11,7 @@ export class PageManager {
     private _isInitialized: boolean;
 
     /**
-     * Manages the creation of DOM elements for an domeExplorer instance. 
+     * Manages the creation of DOM elements for a domeExplorer instance. 
      * 
      * @param appContainer div element to render the app instance in. 
      */
@@ -27,6 +26,7 @@ export class PageManager {
 
     /**
      * Initializes the page layout for the app. 
+     * 
      * @remarks
      * If the page layout has already been initialized this step is skipped. 
      */
@@ -40,8 +40,8 @@ export class PageManager {
 
     /**
      * Initializes the loading screen DOM elements. 
-     * @remarks
-     * Avoids assigning id's to DOM elements for better readability. 
+     * 
+     * @remarks Avoids assigning id's to DOM elements for better readability. 
      */
     private initializeLoadingScreenContainer(): void {
         this._loadingContainer.classList.add("loadingScreenContainer");
@@ -74,7 +74,7 @@ export class PageManager {
     }
 
     /**
-     * Initializes the canvas DOM element 
+     * Initializes the canvas DOM element. 
      */
     private initializeCanvas(): void {
         this._renderCanvas.classList.add("renderCanvas");

@@ -1,7 +1,7 @@
 import { DomeExplorer } from "./DomeExplorer";
 
 /**
- * The starting point of the application. 
+ * The entrypoint of the application. 
  */
 function main() {
     let domeExplorer = new DomeExplorer();
