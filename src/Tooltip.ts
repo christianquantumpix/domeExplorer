@@ -63,17 +63,17 @@ export class Tooltip {
         uiTexture.addControl(this._line);
         this._line.linkWithMesh(this._targetMesh);
 
-        this._dot.width = "8px";
-        this._dot.height = "8px";
+        this._dot.widthInPixels = 8;
+        this._dot.heightInPixels = 8;
         this._dot.thickness = 0;
         this._dot.background = COLOR_MAIN;
         uiTexture.addControl(this._dot);
         this._dot.linkWithMesh(this._targetMesh);  
 
-        let width = this._textContent.length * 18;
+        let width = this._textContent.length * CAPTION_SIZE;
 
         this._bubble.adaptWidthToChildren = true;
-        this._bubble.height = "36px";
+        this._bubble.heightInPixels = 36;
         this._bubble.thickness = 1;
         this._bubble.color = COLOR_WHITE;
         this._bubble.cornerRadius = 4;
@@ -84,8 +84,8 @@ export class Tooltip {
         this._line.connectedControl = this._bubble;
 
         this._label.text = this._textContent;
-        this._label.width = String(width + "px");
-        this._label.fontSize = CAPTION_SIZE;
+        this._label.widthInPixels = width;
+        this._label.fontSizeInPixels = CAPTION_SIZE;
         this._label.color = COLOR_WHITE;
         this._label.textWrapping = true;
         this._bubble.addControl(this._label);

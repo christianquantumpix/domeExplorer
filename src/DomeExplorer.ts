@@ -12,21 +12,23 @@ import { UIManager } from "./UIManager";
 export class DomeExplorer {
     private _pageManager: PageManager;
     private _loadingScreen: LoadingScreen;
+    // Maybe should be extracted into a scene manager class?
     private _engine: Engine;
     private _scene: Scene;
     private _camera: FreeCamera;
-    private _uiManager: UIManager;
+    //
     private _domeManager: DomeManager;
+    private _uiManager: UIManager;
 
     /**
      * Creates a new dome explorer app instance. 
      */
     constructor() {
         this._pageManager = new PageManager();
-        this._loadingScreen = new LoadingScreen(this._pageManager.loadingScreenContainer); // Create a loading screen.         
-        this._engine = new Engine(this._pageManager.renderCanvas, true); // Create the babylon scene and engine. 
-        this._scene = new Scene(this._engine); 
-        this._camera = new FreeCamera("camera", Vector3.Zero(), this.scene); // Create the babylon camera to render from.           
+        this._loadingScreen = new LoadingScreen(this._pageManager.loadingScreenContainer);        
+        this._engine = new Engine(this._pageManager.renderCanvas, true);
+        this._scene = new Scene(this._engine);
+        this._camera = new FreeCamera("camera", Vector3.Zero(), this.scene);
         this._uiManager = new UIManager(this._scene);
         this._domeManager = new DomeManager(this._scene, this._uiManager);
     }
@@ -34,7 +36,7 @@ export class DomeExplorer {
     public start(): void {
         this.initPageManager();
         this.initLoadingUI();
-        this.displayLoadingUI();     
+        this.displayLoadingUI();
         this.initScene();
         this.hideLoadingUIWhenLoaded();
         this.showWelcomeMessage();
@@ -71,7 +73,7 @@ export class DomeExplorer {
      */
     private initCamera(): void {
         this._camera.attachControl(this._pageManager.renderCanvas, true);
-        this._camera.inputs.attached.keyboard.detachControl();  
+        this._camera.inputs.attached.keyboard.detachControl();
         this._camera.fov = FOV_HORIZONTAL;
     }
 

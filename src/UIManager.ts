@@ -1,6 +1,6 @@
-import { Animation, Scene } from "babylonjs";
-import { AdvancedDynamicTexture, Control, Grid, Image as ImageGUI, Rectangle, TextBlock } from "babylonjs-gui";
-import { ASSET_PATH, COLOR_MAIN, COLOR_WHITE, TEXT_SIZE } from "./configuration";
+import { Scene } from "babylonjs";
+import { AdvancedDynamicTexture } from "babylonjs-gui";
+import { InfoBubble } from "./InfoBubble";
 
 /**
  * Class used for managing a global UI canvas and global UI elements. 
@@ -8,9 +8,7 @@ import { ASSET_PATH, COLOR_MAIN, COLOR_WHITE, TEXT_SIZE } from "./configuration"
 export class UIManager {
     private _scene: Scene;
     private _uiCanvas: AdvancedDynamicTexture;
-    private _infoBubble: Rectangle;
-    private _infoBubbleText: TextBlock;
-    private _loadingBar: Rectangle;
+    private _infoBubble: InfoBubble;
    
     /**
      * Creates a global UI with a global info bubble for a given scene. 
@@ -20,106 +18,15 @@ export class UIManager {
     constructor(scene: Scene) {
         this._scene = scene;
         this._uiCanvas = AdvancedDynamicTexture.CreateFullscreenUI("uiCanvas", true, this._scene);
-        this._infoBubble = new Rectangle("controlsExplanationBubble");
-        this._infoBubbleText = new TextBlock("infoText");
-        this._loadingBar = new Rectangle("loadingBar");
+        this._infoBubble = new InfoBubble(this._scene, this._uiCanvas);
     }
 
     /**
      * Initializes the info bubble. 
      */
     public initInfoBubble() {
-        this.initShapes();
-        this.initAnimations();
+        this._infoBubble.initInfoBubble();
     }
-
-    /**
-     * Initializes the geometries for the info bubble. 
-     */
-    private initShapes(): void {
-        this._infoBubble.verticalAlignment = Control.VERTICAL_ALIGNMENT_TOP;
-        this._infoBubble.top = "24px";
-
-        this._infoBubble.width = "512px";
-        //this._infoBubble.adaptWidthToChildren = true;
-
-        this._infoBubble.height = "96px";
-        this._infoBubble.thickness = 1;
-        this._infoBubble.color = COLOR_WHITE;
-        this._infoBubble.cornerRadius = 4;
-        this._infoBubble.background = COLOR_MAIN;
-        this._uiCanvas.addControl(this._infoBubble);
-
-        let rows = new Grid();
-        rows.width = "512px";
-        rows.addRowDefinition(0.9);
-        rows.addRowDefinition(0.1);  
-        this._infoBubble.addControl(rows);      
-
-        let columns = new Grid();
-        columns.addColumnDefinition(.15);
-        columns.addColumnDefinition(.85);
-        rows.addControl(columns, 0, 0);
-
-        let infoIcon = new ImageGUI("b1", ASSET_PATH + "textures/UI/info.svg");
-        infoIcon.widthInPixels = 48;
-        infoIcon.heightInPixels = 48;
-        infoIcon.stretch = ImageGUI.STRETCH_UNIFORM;
-        infoIcon.leftInPixels = 12;
-        columns.addControl(infoIcon, 0, 0);
-
-        this._loadingBar.verticalAlignment = Control.VERTICAL_ALIGNMENT_BOTTOM;
-        this._loadingBar.width = "512px";
-        this._loadingBar.height = "8px";
-        this._loadingBar.transformCenterX = 0;
-        this._loadingBar.thickness = 0;
-        this._loadingBar.alpha = .5;
-        this._loadingBar.background = COLOR_WHITE;
-
-        rows.addControl(this._loadingBar, 1, 0);
-
-        this._infoBubbleText.textVerticalAlignment = Control.VERTICAL_ALIGNMENT_TOP;
-        this._infoBubbleText.fontSize = TEXT_SIZE;
-        this._infoBubbleText.color = COLOR_WHITE;
-        this._infoBubbleText.textWrapping = true;
-        this._infoBubbleText.setPadding(12, 12, 12, 12);
-        columns.addControl(this._infoBubbleText, 0, 1);
-
-        this._infoBubble.isVisible = false;
-    }
-
-    /**
-     * Initializes the animations for the info bubble. 
-     */
-    private initAnimations(): void {
-        let scaleXAnim = new Animation("scaleX", "scaleX", 30, Animation.ANIMATIONTYPE_FLOAT, Animation.ANIMATIONLOOPMODE_CONSTANT);
-        let scaleYAnim = new Animation("scaleY", "scaleY", 30, Animation.ANIMATIONTYPE_FLOAT, Animation.ANIMATIONLOOPMODE_CONSTANT);
-
-        let keysScale = [];
-
-        keysScale.push({frame: 0, value: 0});
-        keysScale.push({frame: 8, value: 1});
-
-        scaleXAnim.setKeys(keysScale);
-        scaleYAnim.setKeys(keysScale);
-
-        let fadeInAnim = new Animation("alpha", "alpha", 30, Animation.ANIMATIONTYPE_FLOAT, Animation.ANIMATIONLOOPMODE_CONSTANT);
-        let keysFade = []
-
-        keysFade.push({frame: 0, value: 0});
-        keysFade.push({frame: 8, value: 1});
-
-        fadeInAnim.setKeys(keysFade);
-
-        this._infoBubble.animations = this._infoBubble.animations || [];
-        this._loadingBar.animations = this._loadingBar.animations || [];
-
-        this._infoBubble.animations.push(scaleXAnim);
-        this._infoBubble.animations.push(scaleYAnim);
-        this._infoBubble.animations.push(fadeInAnim);
-
-        this._loadingBar.animations.push(scaleXAnim);
-    };
 
     /**
      * Function to show a message to the user for a limited time. 
@@ -128,30 +35,7 @@ export class UIManager {
      * @param durationMS the duration to show the message for in milliseconds.  
      */
     public showInfo(message: string, durationMS: number, delayMS?: number): void {
-        let delay = delayMS || 0;
-
-        this._infoBubbleText.text = message;
-
-        window.setTimeout(
-            () => {
-                this._infoBubble.isVisible = true;
-            },
-            delay
-        ); 
-
-        window.setTimeout(
-            () => {
-                this._scene.beginAnimation(this._infoBubble, 8, 0, false, 1, () => {
-                    this._infoBubble.isVisible = false;
-                    this._infoBubble.alpha = 1;
-                    this._infoBubble.scaleX = 1;
-                    this._infoBubble.scaleY = 1;
-                });
-            }, 
-            durationMS + delay
-        );
-        
-        this._scene.beginAnimation(this._loadingBar, 8, 0, false, 8 * 1000 / (30 * durationMS));
+        this._infoBubble.showInfo(message, durationMS, delayMS);
     }
 
     /**

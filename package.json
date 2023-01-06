@@ -1,7 +1,7 @@
 {
   "name": "dome-explorer",
   "version": "1.0.0",
-  "description": "",
+  "description": "A simple 360°- panorama click through application. Written in TypeScript and built with Webpack.",
   "main": "./src/index.ts",
   "scripts": {
     "init": "tsc --init",
@@ -10,8 +10,8 @@
     "serve": "webpack serve --config webpack.dev.js"
   },
   "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "author": "Christian Simon",
+  "license": "MIT",
   "devDependencies": {
     "ts-loader": "^9.4.2",
     "typescript": "^4.9.4",

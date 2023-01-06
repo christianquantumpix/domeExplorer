@@ -1,4 +1,4 @@
-import { ASSET_PATH } from "./configuration";
+import { MASCOT_TEXTURE } from "./configuration";
 import { RANDOM_FACTS } from "./randomFacts";
 
 /**
@@ -55,7 +55,7 @@ export class PageManager {
 
         let loadingScreenMascot = document.createElement("object");
         loadingScreenMascot.type = "image/svg+xml";
-        loadingScreenMascot.data = ASSET_PATH + "textures/UI/mascot.svg";
+        loadingScreenMascot.data = MASCOT_TEXTURE;
         loadingScreenMascot.height = loadingScreenMascot.width = "128px";
         loadingScreenMascot.classList.add("loaderMascot");
         content.appendChild(loadingScreenMascot);

@@ -1,7 +1,6 @@
-import { PhotoDome, Scene } from "babylonjs";
+import { PhotoDome, Scene, Vector2, Vector3 } from "babylonjs";
 import { ViewpointButton } from "./Button";
-import { BUTTON_DISTANCE, BUTTON_SIZE, DOME_CONFIGURATION, DOME_DIAMETER, DOME_STARTING_KEY, VIEWPOINT_ACTIVE_TEXTURE, VIEWPOINT_TEXTURE } from "./configuration";
-import { getPositionFromPixelPosition } from "./getPositionFromPixelPosition";
+import { BUTTON_DISTANCE, BUTTON_SIZE, DOME_CONFIGURATION, DOME_DIAMETER, DOME_STARTING_KEY } from "./configuration";
 import { UIManager } from "./UIManager";
 
 /**
@@ -17,7 +16,8 @@ export class DomeManager {
     /**
      * Creates a dome manager instance. 
      * 
-     * @param scene Scene element the dome structure will be attacheed to.
+     * @param scene Scene element the dome structure will be attacheed to. 
+     * @param uiManager UI manager for the current app instance. 
      */
     constructor(scene: Scene, uiManager: UIManager) {
         this._scene = scene;
@@ -42,7 +42,7 @@ export class DomeManager {
         let currentDome = DOME_CONFIGURATION[this._domeKey];
         
         for(var j = 0; j < currentDome.hotspots.length; j++) {
-            let buttonPosition = getPositionFromPixelPosition(currentDome.hotspots[j].position, currentDome.resolution, BUTTON_DISTANCE);
+            let buttonPosition = DomeManager.getPositionFromPixelPosition(currentDome.hotspots[j].position, currentDome.resolution, BUTTON_DISTANCE);
             
             let button = new ViewpointButton(
                 "button", this._scene, BUTTON_SIZE, buttonPosition, this,
@@ -55,6 +55,34 @@ export class DomeManager {
             // Add viewpoint button to the curent list of viewpoint buttons. 
             this._viewButtons.push(button);
         }
+    }
+
+    /**
+     * Function to get a position in 3D space from pixel coordinates on a dome texture. 
+     * 
+     * @param position target pixel coordinates. 
+     * @param resolution texture resolution. 
+     * @param distance target distance from the origin. 
+     * 
+     * @returns position in 3D space. 
+     */
+    static getPositionFromPixelPosition(position: Vector2, resolution: Vector2, distance: number): Vector3 {
+        // Simplify this desease of a formula.
+        let positionX = Math.cos(-2 * Math.PI * position.x / resolution.x);
+        let positionZ = Math.sin(-2 * Math.PI * position.x / resolution.x);
+
+        let positionY = Math.sin(Math.PI * (.5 - position.y / resolution.y));
+
+        // Scaling factor to normalize. 
+        let scalingFactor = Math.cos(Math.PI * (.5 - position.y / resolution.y));
+        positionX *= scalingFactor;
+        positionZ *= scalingFactor;
+
+        let position3D = new Vector3(positionX, positionY, positionZ);
+
+        position3D.scaleInPlace(distance);
+
+        return position3D;
     }
 
     /**
