@@ -1,9 +1,9 @@
-import { Color4, Engine, FreeCamera, Scene, Vector3 } from "babylonjs";
-import { COLOR_MAIN, FOV_HORIZONTAL, MESSAGE_WELCOME } from "./configuration";
+import { Engine, FreeCamera, Scene, Vector3 } from "babylonjs";
 import { DomeManager } from "./DomeManager";
 import { LoadingScreen } from "./LoadingScreen";
 import { PageManager } from "./PageManager";
 import { UIManager } from "./UIManager";
+import { FOV_HORIZONTAL, MESSAGE_WELCOME } from "./settings";
 
 /**
  * Class used for handling the apps main functionality. 
@@ -30,6 +30,9 @@ export class DomeExplorer {
         this._domeManager = new DomeManager(this._scene, this._uiManager);
     }
 
+    /**
+     * Starts a domeExplorer instance. 
+     */
     public start(): void {
         this.initPageManager();
         this.initLoadingUI();
@@ -50,7 +53,6 @@ export class DomeExplorer {
      * Initializes the loading UI. 
      */
     private initLoadingUI(): void {
-        this._scene.clearColor = Color4.FromHexString(COLOR_MAIN);
         this._engine.loadingScreen = this._loadingScreen;
     }
 

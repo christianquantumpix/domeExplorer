@@ -1,7 +1,8 @@
 import { PhotoDome, Scene, Vector2, Vector3 } from "babylonjs";
 import { ViewpointButton } from "./Button";
-import { BUTTON_DISTANCE, BUTTON_SIZE, DOME_CONFIGURATION, DOME_DIAMETER, DOME_STARTING_KEY } from "./configuration";
+import { DOME_CONFIGURATION, DOME_STARTING_KEY } from "./configuration";
 import { UIManager } from "./UIManager";
+import { BUTTON_DISTANCE, BUTTON_SIZE, DOME_DIAMETER } from "./settings";
 
 /**
  * Class for managing the dome network. 
@@ -10,6 +11,8 @@ export class DomeManager {
     private _scene: Scene;
     private _domeKey: keyof typeof DOME_CONFIGURATION;
     private _dome: PhotoDome;
+
+    // THis stuff should be handled by the UI manager. 
     private _viewButtons: Array<ViewpointButton>;
     private _uiManager: UIManager;
 
@@ -32,7 +35,7 @@ export class DomeManager {
      * Initializes the dome manager. 
      */
     public init(): void {
-        ViewpointButton.initMaterials();
+        ViewpointButton.initButtonMaterials();
     }
 
     /**
@@ -48,18 +51,16 @@ export class DomeManager {
         // Set up new set of viewpoint buttons. 
         type keyType = keyof typeof DOME_CONFIGURATION;
         let currentDome = DOME_CONFIGURATION[this._domeKey];
-        
         for(var j = 0; j < currentDome.hotspots.length; j++) {
-            let buttonPosition = DomeManager.getPositionFromPixelPosition(currentDome.hotspots[j].position, currentDome.resolution, BUTTON_DISTANCE);
+            let currentHotspot = currentDome.hotspots[j];
+            let buttonPosition = DomeManager.getPositionFromPixelPosition(currentHotspot.position, currentDome.resolution, BUTTON_DISTANCE);
             
-            let button = new ViewpointButton(
-                "button", this._scene, BUTTON_SIZE, buttonPosition, this,
-                DOME_CONFIGURATION[currentDome.hotspots[j].target as keyType].assetPath, //Try to avoid this casting.
-                DOME_CONFIGURATION[this._domeKey].hotspots[j].target as keyType, // Try to avoid this casting. 
-                DOME_CONFIGURATION[currentDome.hotspots[j].target as keyType].name, // Try to avoid this casting. 
-                this._uiManager
+            let button = new ViewpointButton("button", this._scene, BUTTON_SIZE, buttonPosition, this, 
+                DOME_CONFIGURATION[this._domeKey].hotspots[j].target as keyType, this._uiManager
             );
             button.init();
+
+            
 
             // Add viewpoint button to the current list of viewpoint buttons. 
             this._viewButtons.push(button);
@@ -79,16 +80,13 @@ export class DomeManager {
         // Simplify this disease of a formula.
         let positionX = Math.cos(-2 * Math.PI * position.x / resolution.x);
         let positionZ = Math.sin(-2 * Math.PI * position.x / resolution.x);
-
         let positionY = Math.sin(Math.PI * (.5 - position.y / resolution.y));
-
         // Scaling factor to normalize. 
         let scalingFactor = Math.cos(Math.PI * (.5 - position.y / resolution.y));
         positionX *= scalingFactor;
         positionZ *= scalingFactor;
 
         let position3D = new Vector3(positionX, positionY, positionZ);
-
         position3D.scaleInPlace(distance);
 
         return position3D;

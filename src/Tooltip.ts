@@ -1,6 +1,6 @@
 import { ActionManager, Animation, ExecuteCodeAction, Mesh, Scene } from "babylonjs";
 import { Ellipse, Line, Rectangle, TextBlock } from "babylonjs-gui";
-import { COLOR_MAIN, COLOR_WHITE, CAPTION_SIZE, TOOLTIP_Y } from "./configuration";
+import { COLOR_MAIN, COLOR_WHITE, CAPTION_SIZE, TOOLTIP_Y } from "./settings";
 import { UIManager } from "./UIManager";
 
 /**

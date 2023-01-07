@@ -1,4 +1,4 @@
-import { MASCOT_TEXTURE } from "./configuration";
+import { MASCOT_TEXTURE } from "./settings";
 
 /**
  * Class for managing the creation of DOM elements for a domeExplorer instance.
@@ -46,28 +46,28 @@ export class PageManager {
     private initializeLoadingScreenContainer(): void {
         this._loadingContainer.classList.add("loadingScreenContainer");
         this._appContainer.appendChild(this._loadingContainer);
-
+        // Loading screen lamp animation: 
         let loadingLampAnimation = document.createElement("div");
         loadingLampAnimation.classList.add("loadingScreenLampAnimation");
         this._loadingContainer.appendChild(loadingLampAnimation);
-
+        // Layout: 
         let content = document.createElement("div");
         content.classList.add("loadingScreenContent");
         this.loadingContainer.appendChild(content);
-
+        // Loading screen mascot: 
         let loadingMascot = document.createElement("object");
         loadingMascot.type = "image/svg+xml";
         loadingMascot.data = MASCOT_TEXTURE;
         loadingMascot.height = loadingMascot.width = "128px";
         loadingMascot.classList.add("loaderMascot");
         content.appendChild(loadingMascot);
-
+        // Loading screen headline: 
         let loadingScreenHeadline = document.createElement("p");
         loadingScreenHeadline.id = "loadingScreenHeadline";
         loadingScreenHeadline.classList.add("loaderTextHeadline");
         loadingScreenHeadline.innerText = "DID YOU KNOW?";
         content.appendChild(loadingScreenHeadline);
-
+        // Loading screen text: 
         this._loadingText.id = "loadingScreenText";
         this._loadingText.classList.add("loaderText");
         content.appendChild(this._loadingText);

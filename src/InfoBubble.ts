@@ -1,6 +1,6 @@
 import { Animation, Scene } from "babylonjs";
 import { AdvancedDynamicTexture, Control, Grid, Image, Rectangle, TextBlock } from "babylonjs-gui";
-import { COLOR_MAIN, COLOR_WHITE, INFO_TEXTURE, TEXT_SIZE } from "./configuration";
+import { COLOR_MAIN, COLOR_WHITE, INFO_TEXTURE, TEXT_SIZE } from "./settings";
 
 /**
  * Class for creating info bubbles within a UI. 
