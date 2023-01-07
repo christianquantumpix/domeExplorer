@@ -43,7 +43,7 @@ export class DomeManager {
      */
     public initDomeButtons(): void {
         // Remove the old set of viewpoint buttons. 
-        for(var i = 0; i < this._viewButtons.length; i++) {
+        for(let i = 0; i < this._viewButtons.length; i++) {
             this._viewButtons[i].dispose();
         }
         this._viewButtons.length = 0;
@@ -51,7 +51,7 @@ export class DomeManager {
         // Set up new set of viewpoint buttons. 
         type keyType = keyof typeof DOME_CONFIGURATION;
         let currentDome = DOME_CONFIGURATION[this._domeKey];
-        for(var j = 0; j < currentDome.hotspots.length; j++) {
+        for(let j = 0; j < currentDome.hotspots.length; j++) {
             let currentHotspot = currentDome.hotspots[j];
             let buttonPosition = DomeManager.getPositionFromPixelPosition(currentHotspot.position, currentDome.resolution, BUTTON_DISTANCE);
             

@@ -142,7 +142,7 @@ export class ViewpointButton {
      * @param texturePath Texture path for the material. 
      */
     private static initButtonMaterial(active: boolean, name: string, texturePath: string): void {
-        var buttonMaterial = new StandardMaterial(name);
+        let buttonMaterial = new StandardMaterial(name);
         buttonMaterial.useAlphaFromDiffuseTexture = true;
         buttonMaterial.alpha = 1;
         buttonMaterial.disableLighting = true;
