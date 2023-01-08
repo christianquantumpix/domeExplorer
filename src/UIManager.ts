@@ -21,6 +21,12 @@ export class UIManager {
         this._scene = scene;
         this._uiCanvas = AdvancedDynamicTexture.CreateFullscreenUI("uiCanvas", true, this._scene);
         this._infoBubble = new InfoBubble("infoBubble", this._scene);
+        this.init();
+    }
+
+    private init() {
+        this._uiCanvas.rootContainer.scaleX = window.devicePixelRatio;
+        this._uiCanvas.rootContainer.scaleY = window.devicePixelRatio;
     }
 
     /**
