@@ -1,13 +1,13 @@
 import { Animation, Scene } from "babylonjs";
-import { AdvancedDynamicTexture, Control, Grid, Image, Rectangle, TextBlock } from "babylonjs-gui";
+import { Control, Grid, Image, Rectangle, TextBlock } from "babylonjs-gui";
 import { COLOR_MAIN, COLOR_WHITE, INFO_TEXTURE, TEXT_SIZE } from "./settings";
 
 /**
  * Class for creating info bubbles within a UI. 
  */
 export class InfoBubble {
+    private _name: string;
     private _scene: Scene;
-    private _uiCanvas: AdvancedDynamicTexture;
     private _infoBubble: Rectangle;
     private _infoBubbleText: TextBlock;
     private _loadingBar: Rectangle;
@@ -16,14 +16,13 @@ export class InfoBubble {
      * Creates a info bubble to display messages within the UI. 
      * 
      * @param scene Scene object the info bubble will be attached to. 
-     * @param uiCanvas UI canvas the info bubble will be rendered on. 
      */
-    constructor(scene: Scene, uiCanvas: AdvancedDynamicTexture) {
+    constructor(name: string, scene: Scene) {
+        this._name = name;
         this._scene = scene;
-        this._uiCanvas = uiCanvas;
-        this._infoBubble = new Rectangle("infoBubble");
-        this._infoBubbleText = new TextBlock("infoText");
-        this._loadingBar = new Rectangle("loadingBar");
+        this._infoBubble = new Rectangle(name + "Bubble");
+        this._infoBubbleText = new TextBlock(name + "Text");
+        this._loadingBar = new Rectangle(name + "LoadingBar");
     }
 
     /**
@@ -47,7 +46,6 @@ export class InfoBubble {
         this._infoBubble.color = COLOR_WHITE;
         this._infoBubble.cornerRadius = 4;
         this._infoBubble.background = COLOR_MAIN;
-        this._uiCanvas.addControl(this._infoBubble);
 
         // Layout
         let rows = new Grid();
@@ -61,7 +59,7 @@ export class InfoBubble {
         columns.addColumnDefinition(.85);
         rows.addControl(columns, 0, 0);
 
-        let infoIcon = new Image("infoIcon", INFO_TEXTURE); //Async??
+        let infoIcon = new Image("infoIcon", INFO_TEXTURE); //Async?? //Redundant??
         infoIcon.widthInPixels = 48;
         infoIcon.heightInPixels = 48;
         infoIcon.stretch = Image.STRETCH_UNIFORM;
@@ -152,5 +150,9 @@ export class InfoBubble {
         );
         
         this._scene.beginAnimation(this._loadingBar, 8, 0, false, 8 * 1000 / (30 * durationMS));
+    }
+
+    public get infoBubble() {
+        return this._infoBubble;
     }
 }

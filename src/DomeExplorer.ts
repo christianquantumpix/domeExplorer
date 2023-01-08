@@ -105,7 +105,7 @@ export class DomeExplorer {
      */
     private initDome(): void {
         this._domeManager.init();
-        this._domeManager.initDomeButtons();
+        this._domeManager.createViewpointButtons();
     }
 
     /**

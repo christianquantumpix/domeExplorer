@@ -1,4 +1,4 @@
-import { PhotoDome, Scene, Vector2, Vector3 } from "babylonjs";
+import { PhotoDome, Scene, Texture, Vector2, Vector3 } from "babylonjs";
 import { ViewpointButton } from "./Button";
 import { DOME_CONFIGURATION, DOME_STARTING_KEY } from "./configuration";
 import { UIManager } from "./UIManager";
@@ -12,7 +12,7 @@ export class DomeManager {
     private _domeKey: keyof typeof DOME_CONFIGURATION;
     private _dome: PhotoDome;
 
-    // THis stuff should be handled by the UI manager. 
+    // This stuff should possibly be handled by the UI manager. 
     private _viewButtons: Array<ViewpointButton>;
     private _uiManager: UIManager;
 
@@ -41,7 +41,7 @@ export class DomeManager {
     /**
      * Creates and places the viewpoint buttons for the current dome. 
      */
-    public initDomeButtons(): void {
+    public createViewpointButtons(): void {
         // Remove the old set of viewpoint buttons. 
         for(let i = 0; i < this._viewButtons.length; i++) {
             this._viewButtons[i].dispose();
@@ -49,22 +49,40 @@ export class DomeManager {
         this._viewButtons.length = 0;
 
         // Set up new set of viewpoint buttons. 
-        type keyType = keyof typeof DOME_CONFIGURATION;
+        type keyType = keyof typeof DOME_CONFIGURATION; // Type alias. 
         let currentDome = DOME_CONFIGURATION[this._domeKey];
         for(let j = 0; j < currentDome.hotspots.length; j++) {
             let currentHotspot = currentDome.hotspots[j];
+            let targetKey = DOME_CONFIGURATION[this._domeKey].hotspots[j].target as keyType;
+            let tooltipText = DOME_CONFIGURATION[targetKey].name;
             let buttonPosition = DomeManager.getPositionFromPixelPosition(currentHotspot.position, currentDome.resolution, BUTTON_DISTANCE);
-            
-            let button = new ViewpointButton("button", this._scene, BUTTON_SIZE, buttonPosition, this, 
-                DOME_CONFIGURATION[this._domeKey].hotspots[j].target as keyType, this._uiManager
-            );
-            button.init();
+            let button = new ViewpointButton("button", this._scene, BUTTON_SIZE, buttonPosition, this._uiManager, tooltipText);
 
-            
-
-            // Add viewpoint button to the current list of viewpoint buttons. 
-            this._viewButtons.push(button);
+            this.initViewpointButton(button, targetKey);
         }
+    }
+
+    /**
+     * Initializes a viewpoint button. 
+     * 
+     * @param button The button that gets initialized. 
+     * @param targetKey The target key for the button. 
+     */
+    private initViewpointButton(button: ViewpointButton, targetKey: keyof typeof DOME_CONFIGURATION): void {
+        button.init();
+        button.registerPickTriggerAction(() => {
+            this.domeKey = targetKey;
+            this.dome.texture = new Texture(
+                DOME_CONFIGURATION[targetKey].assetPath, this._scene, true, false, Texture.TRILINEAR_SAMPLINGMODE, () => {
+                    this._scene.getEngine().hideLoadingUI();
+                }
+            );
+            this._scene.getEngine().displayLoadingUI();
+            this.createViewpointButtons();
+        });
+
+        // Add viewpoint button to the current list of viewpoint buttons. 
+        this._viewButtons.push(button);
     }
 
     /**

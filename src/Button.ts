@@ -1,6 +1,4 @@
 import { ActionManager, ExecuteCodeAction, Mesh, MeshBuilder, Scene, StandardMaterial, Texture, Vector3 } from "babylonjs";
-import { DOME_CONFIGURATION } from "./configuration";
-import { DomeManager } from "./DomeManager";
 import { Tooltip } from "./Tooltip";
 import { UIManager } from "./UIManager";
 import { VIEWPOINT_ACTIVE_TEXTURE, VIEWPOINT_TEXTURE } from "./settings"
@@ -17,11 +15,6 @@ export class ViewpointButton {
     // This shouldnt happen here somehow the uiManager should attach the tooltips to stuff. 
     // So in the domeManager after creating the buttons this should happen and the button doesnt need to know about the uiManager. 
     private _tooltip: Tooltip;
-
-    private _domeManager: DomeManager;  
-    private _targetKey: keyof typeof DOME_CONFIGURATION;
-
-    // READ ABOVE
     private _uiManager: UIManager;
 
     private static _material: StandardMaterial;
@@ -35,19 +28,16 @@ export class ViewpointButton {
      * @param scene scene the button gets attached to. 
      * @param size size of the button. 
      * @param position position of the button in 3D space. 
-     * @param domeManager domeManager object associated with the current domeExplorer instance. 
-     * @param targetKey key of the targeted dome in the configuration. 
      * @param uiManager uiManager associated with the current domeExplorer instance. 
+     * @param tooltipText text to be displayed as a tooltip. 
      */
-    constructor(name: string, scene: Scene, size: number, position: Vector3, domeManager: DomeManager, targetKey: keyof typeof DOME_CONFIGURATION, uiManager: UIManager) {
+    constructor(name: string, scene: Scene, size: number, position: Vector3, uiManager: UIManager, tooltipText: string) {
         this._name = name;
         this._scene = scene;
         this._mesh = MeshBuilder.CreatePlane("button" + this._name, {size: size}, this._scene);
         this._position = position;
-        this._domeManager = domeManager;
-        this._targetKey = targetKey;
         this._uiManager = uiManager;
-        this._tooltip = this._uiManager.createTooltip(this._name + "Tooltip", this._mesh, DOME_CONFIGURATION[targetKey].name);
+        this._tooltip = this._uiManager.createTooltip(this._name + "Tooltip", this._mesh, tooltipText);
     }
 
     /**
@@ -68,19 +58,18 @@ export class ViewpointButton {
     }
 
     /**
-     * Registers the actions that make the button interactive. 
+     * Sets up an ActionManager and registers the actions that make the button interactive. 
      */
     private registerActions(): void {
+        this._mesh.actionManager = this._mesh.actionManager || new ActionManager(this._scene); 
         this.initOverTriggerAction();
         this.initOutTriggerAction();
-        this.initPickTriggerAction();
     }
 
     /**
      * Initializes the default behavior for button hovering. 
      */
     private initOverTriggerAction(): void {
-        this._mesh.actionManager = this._mesh.actionManager || new ActionManager(this._scene);
         this._mesh.actionManager.registerAction(
             new ExecuteCodeAction(
                 ActionManager.OnPointerOverTrigger, () => {
@@ -104,22 +93,13 @@ export class ViewpointButton {
     }
 
     /**
-     * Initializes the default behavior for button triggering. 
+     * Attaches a function as a pick trigger action. 
+     * 
+     * @param pickFunction Function that gets attached as a pick trigger action. 
      */
-    private initPickTriggerAction(): void {
+    public registerPickTriggerAction(pickFunction: () => any): void {
         this._mesh.actionManager.registerAction(
-            new ExecuteCodeAction(
-                ActionManager.OnPickTrigger, () => {
-                    this._domeManager.domeKey = this._targetKey;
-                    this._domeManager.dome.texture = new Texture(
-                        DOME_CONFIGURATION[this._targetKey].assetPath, this._scene, true, false, Texture.TRILINEAR_SAMPLINGMODE, () => {
-                            this._scene.getEngine().hideLoadingUI();
-                        }
-                    );
-                    this._scene.getEngine().displayLoadingUI();
-                    this._domeManager.initDomeButtons();
-                }
-            )
+            new ExecuteCodeAction(ActionManager.OnPickTrigger, pickFunction)
         );
     }
 

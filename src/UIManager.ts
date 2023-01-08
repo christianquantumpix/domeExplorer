@@ -19,7 +19,7 @@ export class UIManager {
     constructor(scene: Scene) {
         this._scene = scene;
         this._uiCanvas = AdvancedDynamicTexture.CreateFullscreenUI("uiCanvas", true, this._scene);
-        this._infoBubble = new InfoBubble(this._scene, this._uiCanvas);
+        this._infoBubble = new InfoBubble("infoBubble", this._scene);
     }
 
     /**
@@ -27,6 +27,7 @@ export class UIManager {
      */
     public initInfoBubble() {
         this._infoBubble.initInfoBubble();
+        this._uiCanvas.addControl(this._infoBubble.infoBubble);
     }
 
     /**
