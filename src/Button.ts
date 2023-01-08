@@ -1,7 +1,15 @@
-import { ActionManager, ExecuteCodeAction, Mesh, MeshBuilder, Scene, StandardMaterial, Texture, Vector3 } from "babylonjs";
 import { Tooltip } from "./Tooltip";
 import { UIManager } from "./UIManager";
-import { VIEWPOINT_ACTIVE_TEXTURE, VIEWPOINT_TEXTURE } from "./settings"
+import { VIEWPOINT_ACTIVE_TEXTURE, VIEWPOINT_TEXTURE } from "./settings";
+import { Scene } from "@babylonjs/core/scene";
+import "@babylonjs/core/Culling/ray";
+import { Mesh } from "@babylonjs/core/Meshes/mesh";
+import { Vector3 } from "@babylonjs/core/Maths/math.vector";
+import { StandardMaterial } from "@babylonjs/core/Materials/standardMaterial";
+import { MeshBuilder } from "@babylonjs/core/Meshes/meshBuilder";
+import { ActionManager } from "@babylonjs/core/Actions/actionManager";
+import { ExecuteCodeAction } from "@babylonjs/core/Actions/directActions";
+import { Texture } from "@babylonjs/core/Materials/Textures/texture";
 
 /**
  * Class used to create buttons for navigating to different viewpoints. 

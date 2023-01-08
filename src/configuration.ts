@@ -1,4 +1,4 @@
-import { Vector2 } from "babylonjs";
+import { Vector2 } from "@babylonjs/core/Maths/math.vector";
 import { ASSET_PATH } from "./settings";
 
 type Hotspot = {

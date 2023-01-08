@@ -1,4 +1,4 @@
-import { ILoadingScreen } from "babylonjs";
+import { ILoadingScreen } from "@babylonjs/core/Loading/loadingScreen";
 import { RANDOM_FACTS } from "./randomFacts";
 
 /**

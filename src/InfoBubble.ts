@@ -1,5 +1,11 @@
-import { Animation, Scene } from "babylonjs";
-import { Control, Grid, Image, Rectangle, TextBlock } from "babylonjs-gui";
+import { Animation } from "@babylonjs/core/Animations/animation";
+import "@babylonjs/core/Animations/animatable";
+import { Scene } from "@babylonjs/core/scene";
+import { Control } from "@babylonjs/gui/2D/controls/control";
+import { Grid } from "@babylonjs/gui/2D/controls/grid";
+import { Image } from "@babylonjs/gui/2D/controls/image";
+import { Rectangle } from "@babylonjs/gui/2D/controls/rectangle";
+import { TextBlock } from "@babylonjs/gui/2D/controls/textBlock";
 import { COLOR_MAIN, COLOR_WHITE, INFO_TEXTURE, TEXT_SIZE } from "./settings";
 
 /**

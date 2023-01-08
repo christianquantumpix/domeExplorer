@@ -1,5 +1,6 @@
-import { Mesh, Scene } from "babylonjs";
-import { AdvancedDynamicTexture } from "babylonjs-gui";
+import { Mesh } from "@babylonjs/core/Meshes/mesh";
+import { Scene } from "@babylonjs/core/scene";
+import { AdvancedDynamicTexture } from "@babylonjs/gui/2D/advancedDynamicTexture";
 import { InfoBubble } from "./InfoBubble";
 import { Tooltip } from "./Tooltip";
 

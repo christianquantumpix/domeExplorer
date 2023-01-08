@@ -1,5 +1,12 @@
-import { ActionManager, Animation, ExecuteCodeAction, Mesh, Scene } from "babylonjs";
-import { Ellipse, Line, Rectangle, TextBlock } from "babylonjs-gui";
+import { ActionManager } from "@babylonjs/core/Actions/actionManager";
+import { ExecuteCodeAction } from "@babylonjs/core/Actions/directActions";
+import { Animation } from "@babylonjs/core/Animations/animation";
+import { Mesh } from "@babylonjs/core/Meshes/mesh";
+import { Scene } from "@babylonjs/core/scene";
+import { Ellipse } from "@babylonjs/gui/2D/controls/ellipse";
+import { Line } from "@babylonjs/gui/2D/controls/line";
+import { Rectangle } from "@babylonjs/gui/2D/controls/rectangle";
+import { TextBlock } from "@babylonjs/gui/2D/controls/textBlock";
 import { COLOR_MAIN, COLOR_WHITE, CAPTION_SIZE, TOOLTIP_Y } from "./settings";
 import { UIManager } from "./UIManager";
 

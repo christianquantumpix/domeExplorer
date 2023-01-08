@@ -1,9 +1,14 @@
-import { Engine, FreeCamera, Scene, Vector3 } from "babylonjs";
 import { DomeManager } from "./DomeManager";
 import { LoadingScreen } from "./LoadingScreen";
 import { PageManager } from "./PageManager";
 import { UIManager } from "./UIManager";
 import { FOV_HORIZONTAL, MESSAGE_WELCOME } from "./settings";
+import { Engine } from "@babylonjs/core/Engines/engine";
+import { FreeCamera } from "@babylonjs/core/Cameras/freeCamera";
+import { Vector3 } from "@babylonjs/core/Maths/math.vector";
+import { Scene } from "@babylonjs/core/scene";
+// import "@babylonjs/core/Debug/debugLayer";
+// import "@babylonjs/inspector";
 
 /**
  * Class used for handling the apps main functionality. 
@@ -80,15 +85,17 @@ export class DomeExplorer {
      * Initializes the inspector functionality for debugging. 
      */
     private initInspector(): void {
-        window.addEventListener("keydown", (ev) => {
-            if (ev.shiftKey && ev.ctrlKey && ev.altKey && ev.key === 'i') {
-                if (this._scene.debugLayer.isVisible()) {
-                    this._scene.debugLayer.hide();
-                } else {
-                    this._scene.debugLayer.show();
-                }
-            }
-        });
+        // window.addEventListener("keydown", (ev) => {
+        //     if (ev.shiftKey && ev.ctrlKey && ev.altKey && ev.key === 'i') {
+        //         if (this._scene.debugLayer.isVisible()) {
+        //             this._scene.debugLayer.hide();
+        //         } else {
+        //             this._scene.debugLayer.show({
+        //                 embedMode: true,
+        //               });
+        //         }
+        //     }
+        // });
     }
 
     /**

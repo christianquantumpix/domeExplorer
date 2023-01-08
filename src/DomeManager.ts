@@ -1,8 +1,11 @@
-import { PhotoDome, Scene, Texture, Vector2, Vector3 } from "babylonjs";
 import { ViewpointButton } from "./Button";
 import { DOME_CONFIGURATION, DOME_STARTING_KEY } from "./configuration";
 import { UIManager } from "./UIManager";
 import { BUTTON_DISTANCE, BUTTON_SIZE, DOME_DIAMETER } from "./settings";
+import { Texture } from "@babylonjs/core/Materials/Textures/texture";
+import { Vector2, Vector3 } from "@babylonjs/core/Maths/math.vector";
+import { Scene } from "@babylonjs/core/scene";
+import { PhotoDome } from "@babylonjs/core/Helpers/photoDome";
 
 /**
  * Class for managing the dome network. 
