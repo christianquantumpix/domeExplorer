@@ -23,7 +23,7 @@ export const TOOLTIP_Y = -192;
 export const COLOR_MAIN = "#367496";
 export const COLOR_SECONDARY_DARK = "#3F352C";
 export const COLOR_SECONDARY_LIGHT = "#BCA089";
-export const COLOR_TERTIARY = "#FFC14D";
+export const COLOR_TERTIARY = "#ffb218";
 export const COLOR_BLACK = "#000000";
 export const COLOR_WHITE = "#FFFFFF";
 
